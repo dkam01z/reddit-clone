@@ -23,7 +23,7 @@ function App() {
         <Flex overflow="hidden">
           {!isMobile ? <Sidebar /> : null }
          
-          <Flex direction="column" flexGrow={1} overflowY="none">
+          <Flex direction="column" flexGrow={0.8} overflowY="none">
             <div className="App-header">
             
               <Routes>

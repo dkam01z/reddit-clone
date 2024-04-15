@@ -6,7 +6,7 @@ import { FaChartBar, FaChevronDown, FaFire, FaRocket, FaSun } from "react-icons/
 export const Category = () => {
 
     const containerWidth = useBreakpointValue({ base: "100%", sm: "100%", md: "100%" });
-    const fontWidth = useBreakpointValue({ base: "10px", sm: "20px", md: "20px" });
+    const fontWidth = useBreakpointValue({ base: "10px", sm: "20px", md: "17px" });
 
     const buttons = [
         {title: "Best", icon: <FaRocket/>, to: "/best" },

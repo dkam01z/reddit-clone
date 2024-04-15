@@ -2,6 +2,7 @@ import { configureStore, combineReducers , getDefaultMiddleware } from '@reduxjs
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
 import FormSlice from './slice/FormSlice'; // Adjust the path as necessary
+import Hotslice from './slice/Hotslice';
 
 const persistConfig = {
   key: 'root',
@@ -10,7 +11,8 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  form: FormSlice, // Make sure this matches the export from your slice file
+  form: FormSlice,
+  post: Hotslice 
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

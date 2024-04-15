@@ -94,7 +94,7 @@ app.post("/register" , (req, res) => {
 app.post("/login", (req, res) => {
   const { Uname, password } = req.body;
 
-  const selectUserQuery = "SELECT COUNT(*) as count, username, email, password_hash FROM users WHERE username = ?";
+  const selectUserQuery = "SELECT COUNT(*) as count, user_id, username, email, password_hash FROM users WHERE username = ?";
   const values = [Uname];
 
   db.query(selectUserQuery, values, (err, results) => {
@@ -116,17 +116,18 @@ app.post("/login", (req, res) => {
       const isPasswordValid = bcrypt.compareSync(password, storedPassword);
 
       if (isPasswordValid) {
-        req.session.user = { user: user.username, email: user.email }; 
+        req.session.user = { user_id: user.user_id, user: user.username, email: user.email }; 
         const sessionId = req.sessionID;
         console.log("Session ID:", sessionId);
         console.log("Session user:", req.session.user);
         return res.status(200).json({
           msg: "Login successful",
+          id: user.user_id,
           user: req.session.user,
           email: req.session.email,
           sessionId: sessionId 
         });
-      } else {
+      } else { 
         return res.status(401).json({ message: 'Invalid password' });
       }
     } else {
@@ -135,18 +136,88 @@ app.post("/login", (req, res) => {
   });
 });
 
-app.get('/api/fetch-posts', async (req, res) => {
+app.get('/fetchPosts', (req, res) => {
+  const fetchPostsQuery = `
+    SELECT 
+      p.post_id AS id,
+      u.username AS author,
+      p.created_at as time,
+      p.title,
+      p.content,
+      COUNT(DISTINCT c.comment_id) AS comments,
+      COALESCE(SUM(CASE WHEN v.vote_type = 1 THEN 1 WHEN v.vote_type = -1 THEN -1 ELSE 0 END), 0) AS votes
+    FROM posts p
+    JOIN users u ON p.user_id = u.user_id
+    LEFT JOIN comments c ON p.post_id = c.post_id
+    LEFT JOIN votes v ON p.post_id = v.post_id
+    
+    GROUP BY p.post_id
+    ORDER BY p.created_at DESC;
+  `;
+
+  db.query(fetchPostsQuery, (err, results) => {
+    if (err) {
+      console.error("ERROR: ", err);
+      res.status(500).json({ message: 'Error fetching posts' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
+app.post('/submitPost', async (req, res) => {
+  
+  const { type, dataToSubmit } = req.body;
+
+  if (!type || !dataToSubmit) {
+    return res.status(400).json({ message: 'Request is missing type or dataToSubmit' });
+  }
+
+
+  const userId = req.session.user.user_id;
+  
   try {
-    const apiUrl = 'https://www.reddit.com/.json'; 
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    res.send(data);
+    let query = "";
+    let values = [];
+    
+    
+    switch(type) {
+      case 'Post':
+        query = "INSERT INTO posts (user_id, title, content, community, category ) VALUES (?, ?, ?,? ,? )";
+        values = [userId, dataToSubmit.title, dataToSubmit.description,  dataToSubmit.community, dataToSubmit.selectedCategories.join(',')];
+        break;
+      case 'Image':
+        query = "INSERT INTO posts (image, content, user_id) VALUES (?, ?, ?)";
+        values = [dataToSubmit.imageUrl, dataToSubmit.description, req.session.user.id];
+        break;
+      case 'Link':
+        query = "INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)";
+        values = [dataToSubmit.title, dataToSubmit.description, req.session.user.id];
+        break;
+   
+      default:
+        return res.status(400).json({ message: 'Invalid post type' });
+    }
+
+    db.query(query, values, (err, results) => {
+      if (err) {
+        console.error("ERROR: ", err);
+        return res.status(500).json({ message: 'Error submitting post' });
+      }
+      res.json({ success: true, message: 'Post submitted successfully', postId: results.insertId });
+    });
   } catch (error) {
-    res.status(500).send('Error fetching posts');
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
   }
 });
 
 
+
+
+
+  
 
 app.get('/check-auth', (req, res) => {
   if (req.session && req.session.user) {

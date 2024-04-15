@@ -3,7 +3,7 @@ import { Stack, Input, InputGroup, InputLeftElement, Box, useBreakpointValue } f
 import { SearchIcon } from '@chakra-ui/icons';
 
 function SearchBar() {
-  const searchWidth = useBreakpointValue({ base: '100%', sm: '100%', md: '400px', xl: '900px' });
+  const searchWidth = useBreakpointValue({ base: '100%', sm: '100%', md: '500px', xl: "750px" , "2xl": "100vh" });
   const [term, setTerm] = useState(false);
   
 

@@ -19,7 +19,6 @@ const LoggedBar = () => {
   const dispatch = useDispatch();
   const [isSmallScreen] = useMediaQuery("(max-width: 600px)");
   const username = useSelector((state) => state.form.user.user); 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const logoutHandler = () => {
     dispatch(logout())
       .unwrap()
@@ -72,13 +71,13 @@ const LoggedBar = () => {
         />
         </Flex>
 
-      {!isMobile && (<Menu isLazy color="reddit.400">
+      <Menu isLazy color="reddit.400">
       <MenuButton p={2} borderRadius="5px" _hover={{background:"#202329"}} >
         <Box _hover={{background: "#202329"}}>
       <Flex  align="center">
             
             <FaHome style={{ fontSize: "28px" }}  />
-            {!isSmallScreen && < Text mx={2}>Home</Text>}
+            {!isMobile &&( < Text mx={2}>Home</Text>)}
             <Spacer />
             <IoIosArrowDown />
             
@@ -87,23 +86,25 @@ const LoggedBar = () => {
       </MenuButton  >
         
         <MenuList  background="#202329" color="reddit.400">
+          
           <MenuItem background="#202329" color="gray.300" >Home</MenuItem>
 
         </MenuList>
-      </Menu>)}
+      </Menu>
 
-      <Spacer />
+     
 
-      {!isMobile && (      <Box flex={1} maxW="600px">
-        <SearchBar />
-      </Box>)}
+   
 
-      <Spacer />
+      
 
-       {isMobile && (
-      <Box mr={5}>
-      <FaSearch/>
-      </Box>)}     
+      <Box flex={1} display="flex" justifyContent="center">
+        {!isMobile && (
+          <Box>
+            <SearchBar />
+          </Box>
+        )}
+      </Box>   
 
      
 

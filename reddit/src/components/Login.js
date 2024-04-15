@@ -19,6 +19,7 @@ import '../App.css';
 
 import {useDispatch} from 'react-redux';
 import { signUpUser, loginUser } from "../slice/FormSlice";
+import { useSwalSuccess } from "./Swal/useSwalSuccess";
 
 
 
@@ -42,22 +43,8 @@ function Login({ isOpen, onClose }) {
   const validateEmail = (email) => emailRegex.test(email);
   const validatePassword = (password) => passwordRegex.test(password);
 
-  const swalSuccess = () => {
-    Swal.fire({
-      title: "Success!",
-      text: "Success!" ,
-      icon: "success",
-      customClass: {
-        container: 'swal-overlay',
-        popup: 'dark-theme',
-      },
-    }
-    );
-    onClose();
-    setTimeout(() => {
-      window.location.reload();
-    }, 3000);
-  };
+  const swalSuccess = useSwalSuccess();
+
 
 
 

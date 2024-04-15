@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
+  id: "",
   msg: "",
   user: "",
   token: "",
@@ -104,6 +105,7 @@ const FormSlice = createSlice({
         state.loading = false;
         state.error = "";
         state.isLoggedIn = true;
+        state.id = action.payload.id;
       })
 
       .addCase(loginUser.fulfilled, (state, action) => {
@@ -113,6 +115,7 @@ const FormSlice = createSlice({
         state.loading = false;
         state.error = "";
         state.isLoggedIn = true;
+        state.id = action.payload.id;
       })
 
       .addCase(loginUser.rejected, (state, action) => {
@@ -131,6 +134,14 @@ const FormSlice = createSlice({
         
        
       })
+      .addCase(logout.rejected, (state) => {
+        state.user = "";
+        state.token = "";
+        state.isLoggedIn = false;
+        
+       
+      })
+      
       .addCase(checkLoginStatus.fulfilled, (state, action) => {
         state.isLoggedIn = true;
       

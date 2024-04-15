@@ -10,12 +10,8 @@ export const HomeCreate = () => {
     const containerWidth = useBreakpointValue({ base: "80%", sm: "100%", md: "100%" });
 
     return (
-        <Flex
-            direction="column"
-            w="full"
-            alignItems="center"
-            justifyContent="center"
-            py={4}
+        <Flex   
+            w="100%"
         >
             <Box
                 borderWidth="1px"
