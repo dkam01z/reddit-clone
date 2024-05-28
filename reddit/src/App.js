@@ -18,12 +18,12 @@ function App() {
 
   return (
     <Router>
-      <Flex background="reddit.dark" direction="column" h="100vh">
+      <Flex background="reddit.dark" direction="column">
         {loggedIn ? <LoggedBar /> : <NewBar />}
-        <Flex overflow="hidden">
+        <Flex>
           {!isMobile ? <Sidebar /> : null }
          
-          <Flex direction="column" flexGrow={0.8} overflowY="none">
+          <Flex direction="column" flexGrow={0.8} >
             <div className="App-header">
             
               <Routes>

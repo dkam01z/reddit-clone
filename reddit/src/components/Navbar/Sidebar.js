@@ -11,13 +11,17 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Flex 
+  Flex, 
+  useBreakpointValue
 } from '@chakra-ui/react';
 import { SidebarData } from './SidebarData';
 
-const Sidebar = () => {
+
+const Sidebar = ({sidebarWidth}) => {
+  const drawerWidth = useBreakpointValue({ base: 'full', lg: '300px' });
+
   return (
-    <Box ml={2} background="reddit.dark" borderRight="1px solid #202329" w="250px" color="white" h="100vh" overflowY="auto">
+    <Box ml={2} width={drawerWidth}  background="reddit.dark" borderRight="1px solid #202329" color="white" overflowY="auto">
       <Accordion allowToggle>
         {SidebarData.map((item, index) => (
           <AccordionItem key={index} border="none">

@@ -10,7 +10,7 @@ export const HomeCreate = () => {
     const containerWidth = useBreakpointValue({ base: "80%", sm: "100%", md: "100%" });
 
     return (
-        <Flex   
+        <Flex paddingTop={5}  
             w="100%"
         >
             <Box

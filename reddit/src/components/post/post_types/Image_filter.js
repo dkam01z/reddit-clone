@@ -19,7 +19,7 @@ const PostCreator = () => {
     // Handle the file upload process here
     toast({
       title: 'File uploaded.',
-      description: "We've received your file.",
+      description: "File Successfully loaded.",
       status: 'success',
       duration: 9000,
       isClosable: true,
@@ -49,7 +49,7 @@ const PostCreator = () => {
           htmlFor="file-upload"
         >
           <Box textAlign="center">
-            <Box display="flex" alignItems="center" justifyContent="center"><Text  fontSize='md' >Drag and drop image or <Button onClick={handleFileUpload} borderRadius={20} mt={2}>
+            <Box><Text  fontSize='md' >Drag and drop image or <Button onClick={handleFileUpload} borderRadius={20}>
               Upload
             </Button></Text></Box>
 

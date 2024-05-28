@@ -45,10 +45,8 @@ con.connect((err) => {
 
 global.db = con;
 
-app.post("/register" , (req, res) => {
+app.post("/register", (req, res) => {
   const { Uname, email, password } = req.body;
-
-
 
   if (!Uname || !email || !password) {
     return res.status(400).json({ message: "Please fill all the fields." });
@@ -58,7 +56,7 @@ app.post("/register" , (req, res) => {
   const salt = bcrypt.genSaltSync(saltRounds);
   const hashedPassword = bcrypt.hashSync(password, salt);
 
-  const checkEmailQuery = 'SELECT COUNT(*) as count FROM users WHERE email = ? or username =?';
+  const checkEmailQuery = 'SELECT COUNT(*) as count FROM users WHERE email = ? OR username = ?';
   const values = [email, Uname];
 
   db.query(checkEmailQuery, values, (err, results) => {
@@ -77,14 +75,27 @@ app.post("/register" , (req, res) => {
           console.error("ERROR: ", err);
           return res.status(500).json({ message: 'An error occurred during registration' });
         }
-        req.session.user = { user: user.username, email: user.email }; 
-        const sessionId = req.sessionID;
-        console.log("Session ID:", sessionId);
-        console.log("Session user:", req.session.user);
-        res.status(201).json({
-          msg: "User registered successfully",
-          user: req.session.user,
-          sessionId: sessionId
+
+       
+        const userId = result.insertId;
+        const getUserSql = 'SELECT `user_id`, `username`, `email` FROM `users` WHERE `user_id` = ?';
+        db.query(getUserSql, [userId], (err, userResults) => {
+          if (err) {
+            console.error("ERROR: ", err);
+            return res.status(500).json({ message: 'An error occurred during retrieval of user data' });
+          }
+ 
+          const user = userResults[0];
+          req.session.user = { user_id: user.user_id, user: user.username, email: user.email };
+          const sessionId = req.sessionID;
+          console.log("Session ID:", sessionId);
+          console.log("Session user:", req.session.user);
+
+          res.status(201).json({
+            msg: "User registered successfully",
+            user: req.session.user,
+            sessionId: sessionId
+          });
         });
       });
     }
@@ -165,6 +176,36 @@ app.get('/fetchPosts', (req, res) => {
   });
 });
 
+app.post('/updateCounter', (req, res) => {
+  const { newCount, postId, user_id } = req.body;
+
+  if (!postId || !newCount || !user_id) {
+    return res.status(400).json({ message: 'Missing required data to update count' });
+  }
+
+  const query = `
+  INSERT INTO votes (post_id, user_id, vote_type)
+  VALUES (?, ?, ?)
+  ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type);  
+  `;
+
+  const values = [postId, user_id, newCount];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error updating count:', err);
+      return res.status(500).json({ message: 'Database error while updating count' });
+    }
+
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Post not found or user not authorized' });
+    }
+
+    res.json({ message: 'Count updated successfully', newCount });
+  });
+});
+
 
 app.post('/submitPost', async (req, res) => {
   
@@ -211,6 +252,38 @@ app.post('/submitPost', async (req, res) => {
     console.error(error);
     res.status(500).json({ success: false, message: 'Server error', error: error.message });
   }
+});
+
+
+
+app.get('/getLatestVote/:postId', (req, res) => {
+  const postId = req.params.postId;
+
+  if (!postId) {
+      return res.status(400).json({ message: "Post ID is required" });
+  }
+
+  const query = `
+      SELECT 
+          SUM(vote_type) AS totalVotes
+      FROM votes
+      WHERE post_id = ?;
+  `;
+
+  db.query(query, [postId], (err, results) => {
+      if (err) {
+          console.error('Error fetching latest vote count:', err);
+          return res.status(500).json({ message: 'Database error while fetching latest vote count' });
+      }
+
+ 
+      if (results.length > 0 && results[0].totalVotes !== null) {
+          res.json({ newCount: results[0].totalVotes });
+      } else {
+         
+          res.json({ newCount: 0 });
+      }
+  });
 });
 
 

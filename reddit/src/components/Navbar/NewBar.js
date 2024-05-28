@@ -23,8 +23,9 @@ import RedditLogo from '../logos/main-logo.svg';
 import Sidebar from './Sidebar';
 
 function NewBar() {
+ 
   const [loginForm, setLoginForm] = useState(false);
-  const isMobile = useBreakpointValue({ base: true, sm: true, md: true, lg: false });
+  const isMobile = useBreakpointValue({ base: true, lg: false });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toggleLogin = () => {
@@ -51,7 +52,7 @@ function NewBar() {
               fontSize="30px"
               background="none"
               _hover={{ background: "none" }}
-              display={{ base: 'flex', md: 'none' }}
+              display={{ base: 'flex', lg: 'none' }}
             />
           )}
           <Image
@@ -62,10 +63,9 @@ function NewBar() {
           />
         </Flex>
 
-        
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
           <DrawerOverlay />
-          <DrawerContent bg="reddit.dark">
+          <DrawerContent bg="reddit.dark" >
             <DrawerCloseButton color="white" />
             <DrawerHeader></DrawerHeader>
             <DrawerBody padding={0}>
@@ -74,12 +74,10 @@ function NewBar() {
           </DrawerContent>
         </Drawer>
 
-    
         <Box flex={1} display={{ base: 'none', md: 'flex' }} justifyContent="center">
           <SearchBar />
         </Box>
 
-    
         <Flex alignItems="center" justifyContent="flex-end" minWidth="10%">
           <Button
             onClick={() => window.location.href = 'https://play.google.com/store/apps/details?id=com.reddit.frontpage&hl=en&gl=US&pli=1'}
