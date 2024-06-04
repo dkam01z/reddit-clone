@@ -147,6 +147,8 @@ app.post("/login", (req, res) => {
   });
 });
 
+
+
 app.get('/fetchPosts', (req, res) => {
   const fetchPostsQuery = `
     SELECT 
