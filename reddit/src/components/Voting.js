@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, useMemo, useCallback } from 'react';
 import { VStack, IconButton, Text } from '@chakra-ui/react';
 import { BiUpvote, BiDownvote } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +15,8 @@ const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
     setCount(initialVotes);
   }, [initialVotes]);
 
-  const handleVote = async (voteType) => {
+  const handleVote =  useCallback( async (voteType) => {
+    
     if (!loggedIn) {
       onVoteAttempt();
       return;
@@ -56,7 +57,7 @@ const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
     } catch (error) {
       console.error("Failed to update the vote:", error);
     }
-  };
+  }, []);
 
   return (
     <VStack borderRight="1px solid" spacing={0} align="center" bg="reddit.500" borderColor="reddit.500">
@@ -83,4 +84,4 @@ const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
   );
 };
 
-export default memo(Voting);
+export default Voting;

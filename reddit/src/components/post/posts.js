@@ -7,10 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttempt }) => {
-  const navigate = useNavigate();
 
-
-  
   const boxWidth = useBreakpointValue({
     base: '350px',
     sm: '500px',
@@ -60,5 +57,6 @@ const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttemp
     </Box>
   );
 };
+
 
 export default Posts;

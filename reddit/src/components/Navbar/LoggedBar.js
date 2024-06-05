@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Flex, IconButton, Image, Button, Box, Spacer, Menu, MenuButton, MenuList, MenuItem, VStack, Text, useMediaQuery, useBreakpointValue, Drawer,
@@ -6,21 +6,24 @@ import {
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
-  DrawerCloseButton, useDisclosure
+  DrawerCloseButton, useDisclosure, Icon, ModalContent, ModalHeader, ModalOverlay, ModalCloseButton, ModalBody, ModalFooter
 } from '@chakra-ui/react';
 import Sidebar from './Sidebar';
 import { IoMdAdd, IoIosArrowDown, IoMdSettings } from 'react-icons/io';
 import { FiArrowRightCircle, FiBell, FiMessageCircle } from 'react-icons/fi';
 import { FaHome } from 'react-icons/fa';
 import RedditLogo from "../logos/main-logo.svg"
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { AddIcon, HamburgerIcon } from '@chakra-ui/icons';
 import ResponsiveLogo from '../logos/ResponsiveLogo.svg';
 import { logout } from '../../slice/FormSlice';
 import SearchBar from '../Searchbar';
 import { Link } from 'react-router-dom';
+import { Modal } from 'antd';
+import Community from '../CommunityModal';
 
 const LoggedBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isUse, onUse, onSwitch } = useDisclosure();
   const dispatch = useDispatch();
   const [isSmallScreen] = useMediaQuery("(max-width: 600px)");
   const username = useSelector((state) => state.form.user.user);
@@ -55,6 +58,15 @@ const LoggedBar = () => {
       </Button>
     </Link>
   );
+
+
+  const [toggle, setToggle] = useState(false);
+
+  const toggleCommunityModal = () => {
+    setToggle(!toggle)
+    console.log(toggle)
+  }
+  
 
   const isMobile = useBreakpointValue({ base: true, lg: false });
 
@@ -105,9 +117,12 @@ const LoggedBar = () => {
           </Box>
         </MenuButton>
         <MenuList background="#202329" color="reddit.400">
-          <MenuItem background="#202329" color="gray.300">Home</MenuItem>
+          <MenuItem onClick={toggleCommunityModal} background="#202329" color="gray.300"><Icon as={AddIcon} mr={2}/> Create a new Community</MenuItem>
+          
         </MenuList>
       </Menu>
+        
+
 
       <Box flex={1} display="flex" justifyContent="center">
         {!isMobile && (
@@ -137,6 +152,7 @@ const LoggedBar = () => {
           <MenuItem background="#202329" color="gray.300" onClick={logoutHandler}>Logout</MenuItem>
         </MenuList>
       </Menu>
+      {toggle && <Community isUse={toggle} onSwitch={toggleCommunityModal} />}
     </Flex>
   );
 };

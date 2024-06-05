@@ -16,7 +16,7 @@ const PostList = () => {
 
   const handleVoteAttempt = useCallback(() => {
     setLoginModalOpen(true);
-  }, []);
+  }, [setLoginModalOpen]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -41,4 +41,4 @@ const PostList = () => {
   );
 };
 
-export default React.memo(PostList);
+export default PostList;
