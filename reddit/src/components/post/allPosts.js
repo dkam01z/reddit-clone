@@ -2,8 +2,14 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPost } from '../../slice/Hotslice';
 import Posts from './posts';
-import { Box } from '@chakra-ui/react';
+import { Box,  Alert, Spinner,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  VStack, Text, Img} from '@chakra-ui/react';
 import Login from '../Login';
+import ErrorImg from '../logos/ErrorImg.png' 
+
 
 const PostList = () => {
   const dispatch = useDispatch();
@@ -18,8 +24,25 @@ const PostList = () => {
     setLoginModalOpen(true);
   }, [setLoginModalOpen]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return (
+    <VStack>
+    <Spinner
+     
+    thickness='4px'
+    speed='0.65s'
+    emptyColor='reddit.100'
+    color={'reddit.200'}
+    size='xl'
+  />
+  <Text className="loading" as='b'>Loading</Text>
+    </VStack>
+);
+  if (error) return (
+    <VStack justifyContent="center" alignItems="center">
+    <Img src={ErrorImg} />
+    <Text as='b'>Unable to fetch Posts!</Text>
+    </VStack>
+  )
 
   return (
     <Box>

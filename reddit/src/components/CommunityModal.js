@@ -22,9 +22,19 @@ import {
 
   import { GoPeople   } from "react-icons/go";
   import { FaEyeSlash,FaLock  } from "react-icons/fa";
+import { useState } from 'react';
 
 function Community({isUse, onSwitch}) {
- 
+
+    const [number, setNumber] = useState(250);
+    
+
+    const maxHandler = (e) => {
+
+        let max = 250;
+        var updatedNumber = max - e.target.value.length;
+        setNumber(updatedNumber);
+    }
     return (
       <>
     
@@ -40,14 +50,14 @@ function Community({isUse, onSwitch}) {
               Community names including capatilization cannot be changed.           
             </FormHelperText>
 
-            <Input  border="none" bg="#393c47" focusBorderColor="transparent" borderRadius="10" mt={5} height="40px"   placeholder="r/"  color="gray.200" type="text"/>
+            <Input  border="none" bg="#393c47"  onInput={maxHandler} focusBorderColor="transparent" borderRadius="10" mt={5} height="40px"   placeholder="r/"  color="gray.200" type="text"/>
             <FormHelperText color="gray.500">
-              21 Characters left.      
+              {number} Characters left.      
             </FormHelperText>
 
 
             <Box>
-            <FormLabel my={2} color="gray.300" fontSize={"20px"}>Community type</FormLabel>
+            <FormLabel my={5} color="gray.300" fontSize={"20px"}>Community type</FormLabel>
                 <Flex direction="column" my={2}>
                     <Flex my={1}>
                         
