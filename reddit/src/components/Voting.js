@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo, useMemo, useCallback } from 'react';
 import { VStack, IconButton, Text } from '@chakra-ui/react';
 import { BiUpvote, BiDownvote } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCounter, fetchLatestVoteCount } from '../slice/Hotslice';
+import { updateCounter, fetchLatestVoteCount } from '../slice/PostsSlice';
 
 const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
   const [count, setCount] = useState(initialVotes);
@@ -60,7 +60,7 @@ const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
   }, []);
 
   return (
-    <VStack borderRight="1px solid" spacing={0} align="center" bg="reddit.500" borderColor="reddit.500">
+    <VStack  borderRight="1px solid" spacing={0} align="center" bg="reddit.500" borderColor="reddit.500">
       <IconButton
         _hover={{ bg: "reddit.200", color: "reddit.100" }}
         color="gray.300"

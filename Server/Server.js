@@ -90,7 +90,7 @@ app.post("/register", (req, res) => {
           const sessionId = req.sessionID;
           console.log("Session ID:", sessionId);
           console.log("Session user:", req.session.user);
-
+ 
           res.status(201).json({
             msg: "User registered successfully",
             user: req.session.user,

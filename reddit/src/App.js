@@ -1,6 +1,7 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Flex, useBreakpointValue } from '@chakra-ui/react';
+import { Flex, useBreakpointValue, Box } from '@chakra-ui/react';
 import NewBar from './components/Navbar/NewBar';
 import LoggedBar from './components/Navbar/LoggedBar';
 import CreatePost from './components/post/createPost';
@@ -9,27 +10,32 @@ import Sidebar from './components/Navbar/Sidebar';
 import { useSelector } from 'react-redux';
 import { HomeCreate } from './components/post/Homecreate';
 import { Home } from './components/Home';
+import ProgressBar from './components/ProgressBar'; 
+import PostDetail from './components/post/PostDetail';
 
 function App() {
   const loggedIn = useSelector((state) => state.form.isLoggedIn);
-  const isMobile = useBreakpointValue({ base: true, md:true, lg: false });
- 
-  
+  const isMobile = useBreakpointValue({ base: true, md: true, lg: false });
 
   return (
     <Router>
+      <ProgressBar /> 
       <Flex background="reddit.dark" direction="column">
         {loggedIn ? <LoggedBar /> : <NewBar />}
         <Flex>
-          {!isMobile ? <Sidebar /> : null }
-         
-          <Flex direction="column" flexGrow={0.8} >
+          {!isMobile ? <Sidebar /> : null}
+          <Flex direction="column" flexGrow={0.8}>
             <div className="App-header">
-            
+           
+              <Box>
+             
               <Routes>
                 <Route path="/submit" element={<CreatePost />} />
-                <Route path="/" element={ <Home />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/post/:postId" element={<PostDetail />}/>
               </Routes>
+              </Box>
+       
             </div>
           </Flex>
         </Flex>

@@ -1,12 +1,12 @@
-import React, {useRef} from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Box, Flex, VStack, Heading, Text, IconButton, useBreakpointValue } from '@chakra-ui/react';
 import { FaRegComment, FaShare, FaBookmark, FaEllipsisH } from 'react-icons/fa';
 import CalculateDate from '../calculateDate';
 import Voting from '../Voting';
 import { useNavigate } from 'react-router-dom';
 
-
 const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttempt }) => {
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const boxWidth = useBreakpointValue({
     base: '350px',
@@ -15,26 +15,34 @@ const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttemp
     xl: '700px',
   });
 
-  const renderCount = useRef(0); // Initialize useRef for render count
-
-  // Increment render count on each render
+  const renderCount = useRef(0);
   renderCount.current += 1;
 
-  // Log the render count to the console
   console.log(`Posts component with id ${id} has rendered ${renderCount.current} times`);
- 
 
-  const iconButtons = [
+  const iconButtons = useMemo(() => [
     { id: 1, icon: <FaRegComment />, count: { comments } },
     { id: 2, icon: <FaShare /> },
     { id: 3, icon: <FaBookmark /> },
     { id: 4, icon: <FaEllipsisH /> }
-  ];
+  ], [comments]);
+
+
+  const handleNavigation = () => {
+    navigate(`/post/${id}`);
+  };
 
   return (
-
-    <Box width={boxWidth} borderWidth="1px" borderRadius="5px" bg="reddit.400" borderColor="gray.600">
-      
+    <Box
+      _hover={{ bg: "#1f1f20" }}
+      cursor="pointer"
+      width={boxWidth}
+      borderWidth="1px"
+      borderRadius="5px"
+      bg="reddit.400"
+      borderColor="gray.600"
+      onClick={handleNavigation} 
+    >
       <Flex align="stretch">
         <Voting postId={id} initialVotes={votes} onVoteAttempt={onVoteAttempt} />
         <VStack align="stretch" flex="1">
@@ -58,5 +66,4 @@ const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttemp
   );
 };
 
-
-export default Posts;
+export default React.memo(Posts);

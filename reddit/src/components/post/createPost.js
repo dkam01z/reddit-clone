@@ -25,7 +25,7 @@ import { checkLoginStatus } from "../../slice/FormSlice";
 import { useNavigate } from "react-router-dom";
 import { FaCheck } from "react-icons/fa";
 import ToggleButton from "./post_buttons.js/ToggleButton";
-import { submitPost } from "../../slice/Hotslice";
+import { submitPost } from "../../slice/PostsSlice";
 import { useSwalSuccess } from "../Swal/useSwalSuccess";
 import Swal from "sweetalert2";
 
@@ -150,12 +150,12 @@ const CreatePost = () => {
 
   return (
     <Box alignItems="center" p={4} width={boxWidth}>
-      <Flex borderBottom="2px" width="100%">
-        <Heading size="md" mb={4}>
+      <Flex borderBottom="2px"  width="100%">
+        <Heading  mb={4} size="md">
           Create a New Post
         </Heading>
         <Spacer />
-        <Heading size="sm" mb={4}>
+        <Heading mb={4} size="sm">
           Draft
         </Heading>
       </Flex>

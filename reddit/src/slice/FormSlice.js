@@ -105,7 +105,7 @@ const FormSlice = createSlice({
         state.loading = false;
         state.error = "";
         state.isLoggedIn = true;
-        state.id = action.payload.id;
+        state.id = action.payload.user_id;
       })
 
       .addCase(loginUser.fulfilled, (state, action) => {
@@ -115,7 +115,7 @@ const FormSlice = createSlice({
         state.loading = false;
         state.error = "";
         state.isLoggedIn = true;
-        state.id = action.payload.id;
+        state.id = action.payload.user_id;
       })
 
       .addCase(loginUser.rejected, (state, action) => {

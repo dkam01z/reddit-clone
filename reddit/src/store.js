@@ -2,12 +2,12 @@ import { configureStore, combineReducers , getDefaultMiddleware } from '@reduxjs
 import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
 import FormSlice from './slice/FormSlice'; // Adjust the path as necessary
-import Hotslice from './slice/Hotslice';
+import Hotslice from './slice/PostsSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  // Add other configuration as needed
+  
 };
 
 const rootReducer = combineReducers({

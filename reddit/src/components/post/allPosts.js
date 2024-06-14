@@ -1,15 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchPost } from '../../slice/Hotslice';
+import { fetchPost } from '../../slice/PostsSlice';
 import Posts from './posts';
-import { Box,  Alert, Spinner,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  VStack, Text, Img} from '@chakra-ui/react';
+import { Box, VStack, Text, Spinner, Img } from '@chakra-ui/react';
 import Login from '../Login';
-import ErrorImg from '../logos/ErrorImg.png' 
-
+import ErrorImg from '../logos/ErrorImg.png';
 
 const PostList = () => {
   const dispatch = useDispatch();
@@ -22,41 +17,41 @@ const PostList = () => {
 
   const handleVoteAttempt = useCallback(() => {
     setLoginModalOpen(true);
-  }, [setLoginModalOpen]);
+  }, []);
 
   if (loading) return (
     <VStack>
-    <Spinner
-     
-    thickness='4px'
-    speed='0.65s'
-    emptyColor='reddit.100'
-    color={'reddit.200'}
-    size='xl'
-  />
-  <Text className="loading" as='b'>Loading</Text>
+      <Spinner
+        thickness='4px'
+        speed='0.65s'
+        emptyColor='reddit.100'
+        color={'reddit.200'}
+        size='xl'
+      />
+      <Text className="loading" as='b'>Loading</Text>
     </VStack>
-);
+  );
+
   if (error) return (
     <VStack justifyContent="center" alignItems="center">
-    <Img src={ErrorImg} />
-    <Text as='b'>Unable to fetch Posts!</Text>
+      <Img src={ErrorImg} />
+      <Text as='b'>Unable to fetch Posts!</Text>
     </VStack>
-  )
+  );
 
   return (
     <Box>
       {posts && posts.map(post => (
         <Posts 
-          key={post.id} 
-          title={post.title} 
+          key={post.id}
+          title={post.title}
           time={post.time}
-          content={post.content} 
-          author={post.author} 
+          content={post.content}
+          author={post.author}
           comments={post.comments}
           votes={post.votes}
           id={post.id}
-          onVoteAttempt={handleVoteAttempt} 
+          onVoteAttempt={handleVoteAttempt}
         />
       ))}
       <Login isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
@@ -64,4 +59,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default React.memo(PostList);
