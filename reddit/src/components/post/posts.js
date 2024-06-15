@@ -2,7 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { Box, Flex, VStack, Heading, Text, IconButton, useBreakpointValue } from '@chakra-ui/react';
 import { FaRegComment, FaShare, FaBookmark, FaEllipsisH } from 'react-icons/fa';
 import CalculateDate from '../calculateDate';
-import Voting from '../Voting';
+import Voting from '../HomeVoting';
 import { useNavigate } from 'react-router-dom';
 
 const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttempt }) => {

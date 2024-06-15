@@ -60,7 +60,7 @@ const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
   }, []);
 
   return (
-    <VStack  borderRight="1px solid" spacing={0} align="center" bg="reddit.500" borderColor="reddit.500">
+    <VStack borderRight="1px solid" spacing={0} align="center" bg="reddit.500" borderColor="reddit.500">
       <IconButton
         _hover={{ bg: "reddit.200", color: "reddit.100" }}
         color="gray.300"
