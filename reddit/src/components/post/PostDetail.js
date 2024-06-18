@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Box, Text, Heading, Spinner, VStack, Flex, useBreakpointValue, IconButton } from '@chakra-ui/react';
+import { Box, Text, Heading, Spinner, VStack, Flex, useBreakpointValue, IconButton, Input } from '@chakra-ui/react';
 import { FaRegComment, FaShare, FaBookmark, FaEllipsisH } from 'react-icons/fa';
 import CalculateDate from '../calculateDate';
-import Voting from '../HomeVoting';
+import Voting from '../Voting';
 import { filterPostById } from '../../slice/PostsSlice';
 import ErrorImg from '../logos/ErrorImg.png'; // Example error image
 import PostVoting from '../PostVoting';
@@ -33,7 +33,7 @@ const PostDetail = () => {
 
   if (loading) {
     return (
-      <VStack  justifyContent="center" alignItems="center">
+      <VStack justifyContent="center" alignItems="center">
         <Spinner thickness="4px" speed="0.65s" emptyColor="reddit.100" color="reddit.200" size="xl" />
         <Text className="loading" as="b">Loading</Text>
       </VStack>
@@ -51,7 +51,7 @@ const PostDetail = () => {
 
   if (!post) {
     return (
-      <VStack height="100vh" justifyContent="center" alignItems="center">
+      <VStack justifyContent="center" alignItems="center">
         <Text as="b">Post not found!</Text>
       </VStack>
     );
@@ -60,41 +60,55 @@ const PostDetail = () => {
   const { author, title, content, comments, votes, time } = post;
 
   return (
-    <Flex height="100vh" justifyContent="center" alignItems="flex-start" >
-      <Box
-        width={boxWidth}
-        borderWidth="1px"
-        borderRadius="5px"
-        bg="reddit.400"
-        borderColor="gray.600"
-      >
-        <Flex align="stretch">
-      
-          <VStack >
-            <Box>
-              <Box p={4}>
-                <Text fontSize="sm" color="gray.500">
-                  r/TestingSubreddit · Posted by u/{author} · <CalculateDate time={time} />
-                </Text>
-                <Heading color="gray.200" fontSize="xxl" my={2}>
-                  {title}
-                </Heading>
-                <Text  color="gray.300" mt={5} fontSize='md'>{content}</Text>
+    <Box >
+      <Flex alignItems="start" justifyContent="flex-start" >
+        <Box
+          width={boxWidth}
+          borderWidth="1px"
+          borderRadius="5px"
+          bg="reddit.400"
+          borderColor="gray.600"
+          mb={5}
+        >
+          <Flex align="stretch">
+            <VStack>
+              <Box>
+                <Box p={4}>
+                  <Text fontSize="sm" color="gray.500">
+                    r/TestingSubreddit · Posted by u/{author} · <CalculateDate time={time} />
+                  </Text>
+                  <Heading color="gray.200" fontSize="xxl" my={2}>
+                    {title}
+                  </Heading>
+                  <Text color="gray.300" mt={5} fontSize='md'>{content}</Text>
 
-                <Flex mt={5}>
-                <PostVoting postId={postId} initialVotes={votes} />
-                {iconButtons.map((item) => (
-                  <IconButton key={item.id}  color="gray.300" _hover={{ bg: "reddit.200" }} aria-label="Comment" size="sm" mx={1} variant="ghost" borderRadius={"10px"} icon={item.icon} />
-                ))}
-                  
-                </Flex>
+                  <Flex pr={5} mt={5}>
+                    <PostVoting mx={1} p={5} postId={postId} initialVotes={votes} />
+                    {iconButtons.map((item) => (
+                      <IconButton bg="#1f1f20" key={item.id} color="gray.300" _hover={{ bg: "reddit.200" }} aria-label="Comment" size="md" mx={1} variant="ghost" borderRadius={"15px"} icon={item.icon} />
+                    ))}
+                  </Flex>
 
+                </Box>
               </Box>
-            </Box>
-          </VStack>
-        </Flex>
+            </VStack>
+          </Flex>
+        </Box>
+      </Flex>
+      <Box width={boxWidth} mx="auto">
+      <Input
+          placeholder="Add a Comment..."
+          _hover={{ bg: "#1f1f20" }}
+          _focus={{ borderColor: "gray.600", boxShadow: "none" }}
+          size="md"
+          bg="reddit.400"
+          border="1px solid"
+          borderColor="gray.600"
+          color="gray.200"
+          borderRadius="10px"
+        />
       </Box>
-    </Flex>
+    </Box>
   );
 };
 

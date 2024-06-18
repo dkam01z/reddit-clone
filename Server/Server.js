@@ -7,23 +7,19 @@ const app = express();
 const port = 5000;
 const mysql = require("mysql");
 
-
 app.use(bodyParser.json());
-
 
 app.use(cors({
   origin: 'http://localhost:3000', 
   credentials: true
 }));
 
-
-// Use express-session middleware
 app.use(
   session({
-    secret: "REDDITCLONE1234", // 
+    secret: "REDDITCLONE1234",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, 
+    cookie: { secure: false },
   })
 );
 
@@ -76,7 +72,6 @@ app.post("/register", (req, res) => {
           return res.status(500).json({ message: 'An error occurred during registration' });
         }
 
-       
         const userId = result.insertId;
         const getUserSql = 'SELECT `user_id`, `username`, `email` FROM `users` WHERE `user_id` = ?';
         db.query(getUserSql, [userId], (err, userResults) => {
@@ -84,13 +79,13 @@ app.post("/register", (req, res) => {
             console.error("ERROR: ", err);
             return res.status(500).json({ message: 'An error occurred during retrieval of user data' });
           }
- 
+
           const user = userResults[0];
           req.session.user = { user_id: user.user_id, user: user.username, email: user.email };
           const sessionId = req.sessionID;
           console.log("Session ID:", sessionId);
           console.log("Session user:", req.session.user);
- 
+
           res.status(201).json({
             msg: "User registered successfully",
             user: req.session.user,
@@ -120,14 +115,14 @@ app.post("/login", (req, res) => {
 
     const user = results[0];
 
-    console.log(user)
+    console.log(user);
 
     if (user.count > 0) {
       const storedPassword = user.password_hash;
       const isPasswordValid = bcrypt.compareSync(password, storedPassword);
 
       if (isPasswordValid) {
-        req.session.user = { user_id: user.user_id, user: user.username, email: user.email }; 
+        req.session.user = { user_id: user.user_id, user: user.username, email: user.email };
         const sessionId = req.sessionID;
         console.log("Session ID:", sessionId);
         console.log("Session user:", req.session.user);
@@ -136,18 +131,16 @@ app.post("/login", (req, res) => {
           id: user.user_id,
           user: req.session.user,
           email: req.session.email,
-          sessionId: sessionId 
+          sessionId: sessionId
         });
-      } else { 
+      } else {
         return res.status(401).json({ message: 'Invalid password' });
       }
     } else {
       return res.status(401).json({ message: 'No such Username found!' });
-    } 
+    }
   });
 });
- 
-
 
 app.get('/fetchPosts', (req, res) => {
   const fetchPostsQuery = `
@@ -163,11 +156,10 @@ app.get('/fetchPosts', (req, res) => {
     JOIN users u ON p.user_id = u.user_id
     LEFT JOIN comments c ON p.post_id = c.post_id
     LEFT JOIN votes v ON p.post_id = v.post_id
-    
     GROUP BY p.post_id
     ORDER BY p.created_at DESC;
   `;
-
+  
   db.query(fetchPostsQuery, (err, results) => {
     if (err) {
       console.error("ERROR: ", err);
@@ -178,17 +170,19 @@ app.get('/fetchPosts', (req, res) => {
   });
 });
 
+
+
 app.post('/updateCounter', (req, res) => {
   const { newCount, postId, user_id } = req.body;
 
-  if (!postId || !newCount || !user_id) {
+  if (!postId || newCount === undefined || !user_id) {
     return res.status(400).json({ message: 'Missing required data to update count' });
   }
 
   const query = `
-  INSERT INTO votes (post_id, user_id, vote_type)
-  VALUES (?, ?, ?)
-  ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type);  
+    INSERT INTO votes (post_id, user_id, vote_type)
+    VALUES (?, ?, ?)
+    ON DUPLICATE KEY UPDATE vote_type = VALUES(vote_type);
   `;
 
   const values = [postId, user_id, newCount];
@@ -199,46 +193,36 @@ app.post('/updateCounter', (req, res) => {
       return res.status(500).json({ message: 'Database error while updating count' });
     }
 
-    
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Post not found or user not authorized' });
-    }
-
     res.json({ message: 'Count updated successfully', newCount });
   });
 });
 
-
 app.post('/submitPost', async (req, res) => {
-  
   const { type, dataToSubmit } = req.body;
 
   if (!type || !dataToSubmit) {
     return res.status(400).json({ message: 'Request is missing type or dataToSubmit' });
   }
 
-
   const userId = req.session.user.user_id;
-  
+
   try {
     let query = "";
     let values = [];
-    
-    
-    switch(type) {
+
+    switch (type) {
       case 'Post':
-        query = "INSERT INTO posts (user_id, title, content, community, category ) VALUES (?, ?, ?,? ,? )";
-        values = [userId, dataToSubmit.title, dataToSubmit.description,  dataToSubmit.community, dataToSubmit.selectedCategories.join(',')];
+        query = "INSERT INTO posts (user_id, title, content, community, category) VALUES (?, ?, ?, ?, ?)";
+        values = [userId, dataToSubmit.title, dataToSubmit.description, dataToSubmit.community, dataToSubmit.selectedCategories.join(',')];
         break;
       case 'Image':
         query = "INSERT INTO posts (image, content, user_id) VALUES (?, ?, ?)";
-        values = [dataToSubmit.imageUrl, dataToSubmit.description, req.session.user.id];
+        values = [dataToSubmit.imageUrl, dataToSubmit.description, userId];
         break;
       case 'Link':
         query = "INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)";
-        values = [dataToSubmit.title, dataToSubmit.description, req.session.user.id];
+        values = [dataToSubmit.title, dataToSubmit.description, userId];
         break;
-   
       default:
         return res.status(400).json({ message: 'Invalid post type' });
     }
@@ -258,53 +242,41 @@ app.post('/submitPost', async (req, res) => {
 
 
 
-app.get('/getLatestVote/:postId', (req, res) => {
-  const postId = req.params.postId;
-
-  if (!postId) {
-      return res.status(400).json({ message: "Post ID is required" });
-  }
-
-  const query = `
-      SELECT 
-          SUM(vote_type) AS totalVotes
-      FROM votes
-      WHERE post_id = ?;
-  `;
-
-  db.query(query, [postId], (err, results) => {
-      if (err) {
-          console.error('Error fetching latest vote count:', err);
-          return res.status(500).json({ message: 'Database error while fetching latest vote count' });
-      }
-
- 
-      if (results.length > 0 && results[0].totalVotes !== null) {
-          res.json({ newCount: results[0].totalVotes });
-      } else {
-         
-          res.json({ newCount: 0 });
-      }
-  });
-});
-
-
-
-
-
-  
-
 app.get('/check-auth', (req, res) => {
   if (req.session && req.session.user) {
-
     res.status(200).json({ message: "Authenticated", user: req.session.user });
   } else {
-    
     res.status(401).json({ message: "Not authorized to access this page!" });
   }
 });
 
+app.get('/getUserVotes', (req, res) => {
+  const userId = req.query.userId;
 
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
+  const query = `
+    SELECT post_id, vote_type
+    FROM votes
+    WHERE user_id = ?;
+  `;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Error fetching user votes:', err);
+      return res.status(500).json({ message: 'Database error while fetching user votes' });
+    }
+
+    const userVotes = results.reduce((acc, vote) => {
+      acc[vote.post_id] = vote.vote_type;
+      return acc;
+    }, {});
+
+    res.json(userVotes);
+  });
+});
 
 app.get('/logout', (req, res) => {
   if (req.session && req.session.user) {
@@ -319,14 +291,6 @@ app.get('/logout', (req, res) => {
     res.status(401).json({ message: "You were not logged in" });
   }
 });
-
-
-
-
-
-
- 
-
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

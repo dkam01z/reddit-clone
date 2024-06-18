@@ -20,6 +20,7 @@ import SearchBar from '../Searchbar';
 import { Link } from 'react-router-dom';
 import { Modal } from 'antd';
 import Community from '../CommunityModal';
+import { resetUserVotes } from '../../slice/userVoteSlice';
 
 const LoggedBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -27,20 +28,27 @@ const LoggedBar = () => {
   const dispatch = useDispatch();
   const [isSmallScreen] = useMediaQuery("(max-width: 600px)");
   const username = useSelector((state) => state.form.user.user);
+  
 
   
   const drawerWidth = useBreakpointValue({ base: 'full', lg: '400px' });
 
-  const logoutHandler = () => {
-    dispatch(logout())
-      .unwrap()
-      .then(() => {
-        window.location.href = '/';
-      })
-      .catch((error) => {
-        console.error('Logout failed:', error);
-      });
+  const logoutHandler = async () => {
+    try {
+     
+      dispatch(resetUserVotes());
+  
+      
+      await dispatch(logout()).unwrap();
+  
+      
+      window.location.href = '/';
+    } catch (error) {
+    
+      console.error('Logout failed:', error);
+    }
   };
+  
 
   const iconButtons = [
     { icon: <FiArrowRightCircle size="1.5em" />, label: 'Home', to: '/' },

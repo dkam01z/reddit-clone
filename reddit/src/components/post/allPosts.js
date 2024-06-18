@@ -19,28 +19,15 @@ const PostList = () => {
     setLoginModalOpen(true);
   }, []);
 
-  if (loading) return (
-    <VStack>
-      <Spinner
-        thickness='4px'
-        speed='0.65s'
-        emptyColor='reddit.100'
-        color={'reddit.200'}
-        size='xl'
-      />
-      <Text className="loading" as='b'>Loading</Text>
-    </VStack>
-  );
-
-  if (error) return (
-    <VStack justifyContent="center" alignItems="center">
-      <Img src={ErrorImg} />
-      <Text as='b'>Unable to fetch Posts!</Text>
-    </VStack>
-  );
-
   return (
     <Box>
+      {loading && <Spinner />}
+      {error && (
+        <VStack>
+          <Img src={ErrorImg} alt="Error" />
+          <Text color="red.500">Failed to load posts</Text>
+        </VStack>
+      )}
       {posts && posts.map(post => (
         <Posts 
           key={post.id}

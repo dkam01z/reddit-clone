@@ -3,6 +3,7 @@ import storage from 'redux-persist/lib/storage';
 import { persistStore, persistReducer } from 'redux-persist';
 import FormSlice from './slice/FormSlice'; // Adjust the path as necessary
 import Hotslice from './slice/PostsSlice';
+import VoteSlice from './slice/userVoteSlice';
 
 const persistConfig = {
   key: 'root',
@@ -12,7 +13,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   form: FormSlice,
-  post: Hotslice 
+  post: Hotslice,
+  userVotes: VoteSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
