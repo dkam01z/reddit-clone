@@ -85,17 +85,71 @@ app.post("/register", (req, res) => {
           const sessionId = req.sessionID;
           console.log("Session ID:", sessionId);
           console.log("Session user:", req.session.user);
-
+ 
           res.status(201).json({
             msg: "User registered successfully",
             user: req.session.user,
             sessionId: sessionId
           });
-        });
-      });
+        }); 
+      }); 
     }
   });
 });
+
+app.get('/fetchComments', (req, res) => {
+  const postId = req.query.postId;
+
+  if (!postId) {
+    return res.status(400).json({ message: "Post ID is required" });
+  }
+
+  const fetchCommentsQuery = `
+    SELECT 
+      c.comment_id AS id,
+      u.username AS author,
+      c.content,
+      c.created_at as time,
+      c.parent_id,
+      c.depth
+    FROM comments c
+    JOIN users u ON c.user_id = u.user_id
+    WHERE c.post_id = ?
+    ORDER BY c.created_at ASC;
+  `;
+  
+  db.query(fetchCommentsQuery, [postId], (err, results) => {
+    if (err) {
+      console.error("ERROR: ", err);
+      res.status(500).json({ message: 'Error fetching comments' });
+    } else {
+      console.log(results)
+      res.json(results);
+    }
+  });
+});
+
+app.post('/submitComment', async (req, res) => {
+  const { postId, content } = req.body;
+  const userId = req.session.user.user_id;
+
+  if (!postId || !content || !userId) {
+    return res.status(400).json({ message: 'Missing required data' });
+  }
+
+  const query = "INSERT INTO comments (post_id, user_id, content, created_at) VALUES (?, ?, ?, NOW())";
+  const values = [postId, userId, content];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error submitting comment:', err);
+      return res.status(500).json({ message: 'Database error while submitting comment' });
+    }
+
+    res.json({ message: 'Comment submitted successfully', commentId: result.insertId });
+  });
+});
+
 
 app.post("/login", (req, res) => {
   const { Uname, password } = req.body;
@@ -132,7 +186,7 @@ app.post("/login", (req, res) => {
           user: req.session.user,
           email: req.session.email,
           sessionId: sessionId
-        });
+        }); 
       } else {
         return res.status(401).json({ message: 'Invalid password' });
       }

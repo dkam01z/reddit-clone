@@ -8,11 +8,12 @@ import Voting from '../Voting';
 import { filterPostById } from '../../slice/PostsSlice';
 import ErrorImg from '../logos/ErrorImg.png'; // Example error image
 import PostVoting from '../PostVoting';
+import Comments from '../comments';
 
 const PostDetail = () => {
   const { postId } = useParams();
   const dispatch = useDispatch();
-  const { selectedPost: post, loading, error } = useSelector((state) => state.post);
+  const { selectedPost, loading, error } = useSelector((state) => state.post);
   const iconButtons = useMemo(() => [
     { id: 1, icon: <FaRegComment /> },
     { id: 2, icon: <FaShare /> },
@@ -49,7 +50,7 @@ const PostDetail = () => {
     );
   }
 
-  if (!post) {
+  if (!selectedPost) {
     return (
       <VStack justifyContent="center" alignItems="center">
         <Text as="b">Post not found!</Text>
@@ -57,11 +58,11 @@ const PostDetail = () => {
     );
   }
 
-  const { author, title, content, comments, votes, time } = post;
+  const { author, title, content, votes, time } = selectedPost;
 
   return (
-    <Box >
-      <Flex alignItems="start" justifyContent="flex-start" >
+    <Box>
+      <Flex alignItems="start" justifyContent="flex-start">
         <Box
           width={boxWidth}
           borderWidth="1px"
@@ -96,17 +97,7 @@ const PostDetail = () => {
         </Box>
       </Flex>
       <Box width={boxWidth} mx="auto">
-      <Input
-          placeholder="Add a Comment..."
-          _hover={{ bg: "#1f1f20" }}
-          _focus={{ borderColor: "gray.600", boxShadow: "none" }}
-          size="md"
-          bg="reddit.400"
-          border="1px solid"
-          borderColor="gray.600"
-          color="gray.200"
-          borderRadius="10px"
-        />
+        <Comments postId={postId} />
       </Box>
     </Box>
   );

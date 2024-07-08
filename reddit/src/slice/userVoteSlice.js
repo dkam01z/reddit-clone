@@ -26,7 +26,7 @@ export const fetchUserVotes = createAsyncThunk('userVotes/fetchUserVotes', async
   } catch (error) {
     return rejectWithValue(error.message);
   }
-});
+}); 
 
 export const updateUserVote = createAsyncThunk('userVotes/updateUserVote', async ({ postId, userId, voteType }, { rejectWithValue }) => {
   try {

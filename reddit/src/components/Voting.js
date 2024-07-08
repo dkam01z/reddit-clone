@@ -34,21 +34,21 @@ const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
   const currentVote = userVotes[postId] || 0;
 
 
-  return (
+  return ( 
     <VStack borderRight="1px solid" spacing={0} align="center" bg="reddit.500" borderColor="reddit.500">
       <IconButton
         _hover={{ bg: "reddit.200", color: "reddit.100" }}
-        color={currentVote === 1 ? "reddit.100" : "gray.300"}
+        color={loggedIn ? (currentVote === 1 ? "reddit.100" : "gray.300"): "gray.300" }
         size="md"
         icon={<BiUpvote />}
         onClick={() => handleVote('upvote')}
         aria-label="Upvote"
         variant="ghost"
       />
-      <Text fontSize="lg" color={currentVote === -1 ? "blue.400" : currentVote === 1 ? "reddit.100": "gray.300" } fontWeight={500}>{initialVotes}</Text>
+      <Text fontSize="lg" color={ loggedIn ? ( currentVote === -1 ? "blue.400" : currentVote === 1 ? "reddit.100": "gray.300"): "gray.300" } fontWeight={500}>{initialVotes}</Text>
       <IconButton
         _hover={{ bg: "reddit.200", color: "blue.400" }}
-        color={currentVote === -1 ? "blue.400" : "gray.300"}
+        color={loggedIn ? (currentVote === -1 ? "blue.400" : "gray.300"): "gray.300" }
         size="md"
         icon={<BiDownvote />}
         onClick={() => handleVote('downvote')}
