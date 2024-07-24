@@ -72,7 +72,7 @@ const LoggedBar = () => {
 
   const toggleCommunityModal = () => {
     setToggle(!toggle)
-    console.log(toggle)
+    
   }
   
 

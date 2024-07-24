@@ -60,6 +60,7 @@ const PostDetail = () => {
 
   const { author, title, content, votes, time } = selectedPost;
 
+
   return (
     <Box>
       <Flex alignItems="start" justifyContent="flex-start">
@@ -69,7 +70,7 @@ const PostDetail = () => {
           borderRadius="5px"
           bg="reddit.400"
           borderColor="gray.600"
-          mb={5}
+          
         >
           <Flex align="stretch">
             <VStack>

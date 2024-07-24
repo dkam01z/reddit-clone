@@ -3,12 +3,14 @@ import { Box, Flex, VStack, Heading, Text, IconButton, useBreakpointValue } from
 import { FaRegComment, FaShare, FaBookmark, FaEllipsisH } from 'react-icons/fa';
 import CalculateDate from '../calculateDate';
 import Voting from '../Voting';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import {fetchCommentsByPostId} from '../../slice/commentSlice'
 
 const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttempt }) => {
   const navigate = useNavigate();
-
-  console.log(votes)
+  const dispatch = useDispatch();
+  
  
 
   const boxWidth = useBreakpointValue({
@@ -18,10 +20,7 @@ const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttemp
     xl: '700px',
   });
 
-  const renderCount = useRef(0);
-  renderCount.current += 1;
 
-  console.log(`Posts component with id ${id} has rendered ${renderCount.current} times`);
 
   const iconButtons = useMemo(() => [
     { id: 1, icon: <FaRegComment />, count: { comments } },
@@ -32,6 +31,7 @@ const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttemp
 
 
   const handleNavigation = () => {
+    dispatch(fetchCommentsByPostId(id));
     navigate(`/post/${id}`);
   };
 

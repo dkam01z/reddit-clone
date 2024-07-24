@@ -48,14 +48,12 @@ export const fetchPost = createAsyncThunk('posts/fetchPosts', async (_, { reject
     }
 
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     return rejectWithValue(error.message);
   }
 });
-
-
-
 
 export const filterPostById = createAction('posts/filterPostById', (postId) => {
   return {
@@ -67,7 +65,10 @@ const postSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    resetState: () => initialState,
+    resetPostState: (state) => {
+      state.selectedPost = null;
+      state.comments = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -82,7 +83,6 @@ const postSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'An error occurred';
       })
-
       .addCase(filterPostById, (state, action) => {
         const post = state.posts.find(post => post.id === parseInt(action.payload));
         state.selectedPost = post || null;
@@ -90,6 +90,6 @@ const postSlice = createSlice({
   },
 });
 
-export const { resetState } = postSlice.actions;
+export const { resetPostState } = postSlice.actions;
 
 export default postSlice.reducer;

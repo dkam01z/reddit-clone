@@ -17,10 +17,11 @@ import {
   Text,
   Icon,
   Radio,
-  RadioGroup
+  RadioGroup,
+  useToast
 } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {postCommunity} from "../slice/CommunitySlice"
 import { GoPeople } from "react-icons/go";
 import { FaEyeSlash, FaLock } from "react-icons/fa";
 import { useState } from 'react';
@@ -29,6 +30,9 @@ function Community({ isUse, onSwitch }) {
   const [number, setNumber] = useState(250);
   const [communityType, setCommunityType] = useState('public');
   const dispatch = useDispatch();
+  const [communityName, setName] = useState('')
+  const user_id = useSelector((state) => state.form.user.user_id)
+  const toast = useToast();
 
   const maxHandler = (e) => {
     let max = 250;
@@ -36,10 +40,27 @@ function Community({ isUse, onSwitch }) {
     setNumber(updatedNumber);
   };
 
-
   const submitCommunity = () => {
-    
-  }
+    dispatch(postCommunity({ communityName, communityType, user_id }))
+      .unwrap()
+      .then(() => {
+        toast({
+          title: 'Community Successfully Added.',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: 'Error',
+          description: error,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        });
+      });
+  };
 
   return (
     <>
@@ -66,6 +87,7 @@ function Community({ isUse, onSwitch }) {
                 placeholder="r/"
                 color="gray.200"
                 type="text"
+                onChange={(e) => setName(e.target.value)}
               />
               <FormHelperText color="gray.500">
                 {number} Characters left.
@@ -106,6 +128,7 @@ function Community({ isUse, onSwitch }) {
                 _hover={{ bg: 'reddit.100' }}
                 borderRadius="50"
                 width={40}
+                onClick={submitCommunity}
                 
               >
                 Submit

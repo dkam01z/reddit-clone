@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Text, Spinner, VStack, Input, Button, Flex } from '@chakra-ui/react';
-import { fetchCommentsByPostId } from '../slice/commentSlice';
-
+import { Box, Text, Spinner, VStack, Input,useToast, Button, Flex, Textarea } from '@chakra-ui/react';
+import { fetchCommentsByPostId, submitComment} from '../slice/commentSlice';
+import Swal from 'sweetalert2';
+import CalculateDate from './calculateDate';
+import { ChatIcon } from '@chakra-ui/icons'
 
 const Comment = ({ comment }) => {
+ 
   return (
     <Box key={comment.id} mb={2}>
-      <Text color="gray.500" fontSize="sm">u/{comment.author}</Text>
-      <Text fontSize='lg' color="gray.300" mt={2}>{comment.content}</Text>
-      <Box pl={5}>
+      <Text color="gray.500" fontSize="sm">{comment.author} · <CalculateDate time={comment.time} /> </Text>
+      <Text fontSize='lg' color="gray.200" mt={2}>{comment.content}</Text>
+      <Text color="gray.400" ml={2}fontSize='sm'><ChatIcon/> Reply</Text>
+      <Box my={5} pl={5}>
         {comment.subcomments.map(subcomment => (
           <Comment key={subcomment.id} comment={subcomment} />
         ))}
@@ -21,11 +25,43 @@ const Comment = ({ comment }) => {
 const Comments = ({ postId }) => {
   const dispatch = useDispatch();
   const { comments, loading, error } = useSelector((state) => state.comments);
-  const [commentContent, setCommentContent] = useState('');
+  const {user, id} = useSelector((state) => state.form);
 
+  const userName = user.user;
+
+  const [commentContent, setCommentContent] = useState('');
+  const toast = useToast();
+  
   useEffect(() => {
     dispatch(fetchCommentsByPostId(postId));
   }, [dispatch, postId]);
+
+  const submitCommentHandler = (e) => {
+    if (e.key === "Enter") {
+      dispatch(submitComment({ postId, id, commentContent }))
+        .unwrap()
+        .then((newComment) => {
+          setCommentContent(''); 
+          toast({
+            title: 'Comment Successfully Added.',
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+          });
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: 'Error',
+            text: error || 'An unexpected error occurred.',
+            icon: 'error',
+            customClass: {
+              container: 'swal-overlay',
+              popup: 'dark-theme',
+            },
+          });
+        });
+    }
+  };
 
   
  
@@ -50,7 +86,11 @@ const Comments = ({ postId }) => {
     <Box mt={5}>
       <VStack spacing={4} align="stretch">
         <Flex>
-          <Input
+          <Box   width="100%"
+     
+      >
+            <Text color={"gray.400"} mb={2} fontSize={"sm"}>Comment as {userName}</Text>
+          <Textarea
             value={commentContent}
             onChange={(e) => setCommentContent(e.target.value)}
             placeholder="Add a Comment..."
@@ -62,8 +102,10 @@ const Comments = ({ postId }) => {
             borderColor="gray.600"
             color="gray.200"
             borderRadius="10px"
+            onKeyDown = {submitCommentHandler}
           />
-    
+          <Button size='sm' onClick={submitCommentHandler} colorScheme='reddit.200'>Comment</Button>
+      </Box>
         </Flex>
         <Box p={3} borderWidth="1px" borderRadius="5px" bg="reddit.400" mb={2}>
         {comments.map(comment => (

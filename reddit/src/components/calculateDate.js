@@ -15,8 +15,10 @@ const CalculateDate = ({ time }) => {
         setRelativeTime(`${Math.floor(secondsPast / 60)} minutes ago`);
       } else if (secondsPast < 86400) {
         setRelativeTime(`${Math.floor(secondsPast / 3600)} hours ago`);
-      } else {
+      } else if (secondsPast < 2592000) {
         setRelativeTime(`${Math.floor(secondsPast / 86400)} days ago`);
+      } else {
+        setRelativeTime(`${Math.floor(secondsPast / 2592000)} Months ago`);
       }
     };
 

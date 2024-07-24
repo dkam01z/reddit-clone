@@ -29,7 +29,7 @@ let con = mysql.createConnection({
   password: "",
   port: 3306,
   database: "reddit"
-});
+}); 
 
 con.connect((err) => {
   if (err) {
@@ -97,6 +97,23 @@ app.post("/register", (req, res) => {
   });
 });
 
+
+app.post('/postCommunity', (req, res) => {
+  const { communityName, communityType, user_id } = req.body;
+
+  const query = `INSERT INTO subreddits(name, community_type, created_at, user_id) VALUES (?, ?, NOW(), ?)`;
+  const parameters = [communityName, communityType, user_id];
+
+  db.query(query, parameters, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: "Error in SQL Database" });
+    }
+
+    res.status(200).json({ message: "Success! Community created" });
+  });
+});
+
+
 app.get('/fetchComments', (req, res) => {
   const postId = req.query.postId;
 
@@ -129,26 +146,6 @@ app.get('/fetchComments', (req, res) => {
   });
 });
 
-app.post('/submitComment', async (req, res) => {
-  const { postId, content } = req.body;
-  const userId = req.session.user.user_id;
-
-  if (!postId || !content || !userId) {
-    return res.status(400).json({ message: 'Missing required data' });
-  }
-
-  const query = "INSERT INTO comments (post_id, user_id, content, created_at) VALUES (?, ?, ?, NOW())";
-  const values = [postId, userId, content];
-
-  db.query(query, values, (err, result) => {
-    if (err) {
-      console.error('Error submitting comment:', err);
-      return res.status(500).json({ message: 'Database error while submitting comment' });
-    }
-
-    res.json({ message: 'Comment submitted successfully', commentId: result.insertId });
-  });
-});
 
 
 app.post("/login", (req, res) => {
@@ -198,20 +195,18 @@ app.post("/login", (req, res) => {
 
 app.get('/fetchPosts', (req, res) => {
   const fetchPostsQuery = `
-    SELECT 
-      p.post_id AS id,
-      u.username AS author,
-      p.created_at as time,
-      p.title,
-      p.content,
-      COUNT(DISTINCT c.comment_id) AS comments,
-      COALESCE(SUM(CASE WHEN v.vote_type = 1 THEN 1 WHEN v.vote_type = -1 THEN -1 ELSE 0 END), 0) AS votes
-    FROM posts p
-    JOIN users u ON p.user_id = u.user_id
-    LEFT JOIN comments c ON p.post_id = c.post_id
-    LEFT JOIN votes v ON p.post_id = v.post_id
-    GROUP BY p.post_id
-    ORDER BY p.created_at DESC;
+  SELECT 
+  p.post_id AS id,
+  u.username AS author,
+  p.created_at AS time,
+  p.title,
+  p.content,
+  (SELECT COUNT(*) FROM comments c WHERE c.post_id = p.post_id) AS comments,
+  (SELECT COALESCE(SUM(CASE WHEN v.vote_type = 1 THEN 1 WHEN v.vote_type = -1 THEN -1 ELSE 0 END), 0) 
+   FROM votes v WHERE v.post_id = p.post_id) AS votes
+FROM posts p
+JOIN users u ON p.user_id = u.user_id
+ORDER BY p.created_at DESC;
   `;
   
   db.query(fetchPostsQuery, (err, results) => {
@@ -219,9 +214,31 @@ app.get('/fetchPosts', (req, res) => {
       console.error("ERROR: ", err);
       res.status(500).json({ message: 'Error fetching posts' });
     } else {
+      console.log(results)
       res.json(results);
     }
   });
+});
+ 
+app.post('/submitComment', (req, res) => {
+  const { postId, id, commentContent } = req.body;
+
+
+
+  if (!postId || !id || !commentContent) {
+    return res.status(400).json({ message: "No text!" });
+  }
+
+  const query = 'INSERT INTO comments (post_id, user_id, content, created_at, parent_id, depth) VALUES (?, ?, ?, NOW(), ?, ?)';
+  const parameters = [postId, id, commentContent, null, 0];
+
+  db.query(query, parameters, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: 'Database error while submitting comment' });
+    }
+
+    return res.status(200).json({ message: "Comment submitted successfully" });
+  }); 
 });
 
 
@@ -245,7 +262,7 @@ app.post('/updateCounter', (req, res) => {
     if (err) {
       console.error('Error updating count:', err);
       return res.status(500).json({ message: 'Database error while updating count' });
-    }
+    } 
 
     res.json({ message: 'Count updated successfully', newCount });
   });

@@ -6,30 +6,60 @@ const initialState = {
   error: '',
 };
 
-export const fetchCommentsByPostId = createAsyncThunk(
-  'comments/fetchByPostId',
-  async (postId, { rejectWithValue }) => {
-    try {
-      const response = await fetch(`http://localhost:5000/fetchComments?postId=${postId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Network response was not ok');
+export const submitComment = createAsyncThunk(
+    'comments/submitComment',
+    async ({ postId, id, commentContent }, { rejectWithValue }) => {
+        
+      try {
+        const response = await fetch('http://localhost:5000/submitComment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            postId,
+            id,
+            commentContent
+          })
+        });
+  
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Network response was not ok');
+        }
+  
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
       }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
     }
-  }
-);
+  );
+  export const fetchCommentsByPostId = createAsyncThunk(
+    'comments/fetchCommentsByPostId',
+    async (postId, { rejectWithValue }) => {
+      try {
+        const response = await fetch(`http://localhost:5000/fetchComments?postId=${postId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include'
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Network response was not ok');
+        }
+  
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
+    }
+  );
 
 const nestComments = (comments) => {
   const commentMap = {};
