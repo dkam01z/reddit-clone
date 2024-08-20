@@ -15,15 +15,25 @@ export const Category = () => {
         {title: "Top", icon: <FaChartBar/>, to: "/top" }
     ]
 
+    const boxWidth = useBreakpointValue({
+        base: '350px',
+        sm: '500px',
+        md: '600px',
+        xl: '700px',
+      });
+    
+
     return (
 
 
         <Flex
+      
         justifyContent="flex-start"
-        w="auto"
+        w={boxWidth}
         py={4}
     >
         <Box
+            boxShadow="lg"
             borderWidth="1px"
             borderRadius="5px"
             bg="reddit.400"

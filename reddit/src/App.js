@@ -12,6 +12,7 @@ import { HomeCreate } from './components/post/Homecreate';
 import { Home } from './components/Home';
 import ProgressBar from './components/ProgressBar'; 
 import PostDetail from './components/post/PostDetail';
+import CommunityHome from './components/CommunityHome';
 
 function App() {
   const loggedIn = useSelector((state) => state.form.isLoggedIn);
@@ -24,7 +25,7 @@ function App() {
         {loggedIn ? <LoggedBar /> : <NewBar />}
         <Flex>
           {!isMobile ? <Sidebar /> : null}
-          <Flex direction="column" flexGrow={0.8}>
+          <Flex direction="column" flexGrow={1}>
             <div className="App-header">
            
               <Box>
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/submit" element={<CreatePost />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/post/:postId" element={<PostDetail />}/>
+                <Route path="r/:communityName" element={<CommunityHome/>}/>
               </Routes>
               </Box>
        

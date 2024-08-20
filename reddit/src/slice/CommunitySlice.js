@@ -1,7 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 
 const initialState  = {
-    community: [],
+    communities: [],
+    selectedCommunity: null,
     loading: false
 }
 
@@ -21,6 +22,12 @@ export const fetchCommunities = createAsyncThunk('community/fetchCommunities', a
         return rejectWithValue(error.message);
     }
 } )
+
+export const filterCommunityByName = createAction('posts/filterCommunityByName', (communityName) => {
+  return {
+    payload: communityName,
+  };
+});
 
 
 
@@ -72,6 +79,10 @@ const CommunitySlice = createSlice({
             .addCase(fetchCommunities.rejected, (state,action) => {
                 state.loading = false
             })
+            .addCase(filterCommunityByName, (state, action) => {
+              const community = state.communities.find(community => community.name === action.payload);
+              state.selectedCommunity = community || null;
+            });
             
     }
 

@@ -48,7 +48,7 @@ function Community({ isUse, onSwitch }) {
           title: 'Community Successfully Added.',
           status: 'success',
           duration: 9000,
-          isClosable: true,
+          isClosable: true, 
         });
       })
       .catch((error) => {
@@ -130,7 +130,7 @@ function Community({ isUse, onSwitch }) {
                 width={40}
                 onClick={submitCommunity}
                 
-              >
+              > 
                 Submit
               </Button>
             </ModalFooter>

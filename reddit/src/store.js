@@ -5,6 +5,7 @@ import FormSlice from './slice/FormSlice'; // Adjust the path as necessary
 import Hotslice from './slice/PostsSlice';
 import VoteSlice from './slice/userVoteSlice';
 import commentSlice from './slice/commentSlice';
+import CommunitySlice from './slice/CommunitySlice';
 
 const persistConfig = {
   key: 'root',
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   form: FormSlice,
   post: Hotslice,
   userVotes: VoteSlice,
-  comments: commentSlice
+  comments: commentSlice,
+  community: CommunitySlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

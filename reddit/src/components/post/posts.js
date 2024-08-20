@@ -1,17 +1,15 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Box, Flex, VStack, Heading, Text, IconButton, useBreakpointValue } from '@chakra-ui/react';
 import { FaRegComment, FaShare, FaBookmark, FaEllipsisH } from 'react-icons/fa';
 import CalculateDate from '../calculateDate';
 import Voting from '../Voting';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {fetchCommentsByPostId} from '../../slice/commentSlice'
+import { fetchCommentsByPostId } from '../../slice/commentSlice';
 
 const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttempt }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
- 
 
   const boxWidth = useBreakpointValue({
     base: '350px',
@@ -20,15 +18,12 @@ const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttemp
     xl: '700px',
   });
 
-
-
   const iconButtons = useMemo(() => [
-    { id: 1, icon: <FaRegComment />, count: { comments } },
-    { id: 2, icon: <FaShare /> },
-    { id: 3, icon: <FaBookmark /> },
-    { id: 4, icon: <FaEllipsisH /> }
+    { id: 1, icon: <FaRegComment />, name: comments },
+    { id: 2, icon: <FaShare />, name: "Share" },
+    { id: 3, icon: <FaBookmark />, name: "Save" },
+    { id: 4, icon: <FaEllipsisH />, name: "More" }
   ], [comments]);
-
 
   const handleNavigation = () => {
     dispatch(fetchCommentsByPostId(id));
@@ -36,36 +31,53 @@ const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttemp
   };
 
   return (
-    <Box
-      _hover={{ bg: "#1f1f20" }}
-      cursor="pointer"
-      width={boxWidth}
-      borderWidth="1px"
-      borderRadius="5px"
-      bg="reddit.400"
-      borderColor="gray.600"
-     
-    >
-      <Flex align="stretch">
-        <Voting postId={id} initialVotes={votes} onVoteAttempt={onVoteAttempt} />
-        <VStack  onClick={handleNavigation}  align="stretch" flex="1">
-          <Box overflow="hidden">
-            <Box p={4}>
-              <Text fontSize="sm" color="gray.500">
-                r/TestingSubreddit · Posted by u/{author} · <CalculateDate time={time} />
-              </Text>
-              <Heading color="gray.200" fontSize="xl" my={2}>
-                {title}
-              </Heading>
-              <Text color="gray.300" fontSize='md'>{content}</Text>
-              {iconButtons.map((item) => (
-                <IconButton key={item.id} color="gray.300" _hover={{ bg: "reddit.200" }} aria-label="Comment" size="sm" mx={1} variant="ghost" icon={item.icon} />
-              ))}
+    <Flex  my={1}>
+      <Box
+        boxShadow="lg"
+        _hover={{ bg: "#1f1f20" }}
+        cursor="pointer"
+        width={boxWidth}
+        borderWidth="1px"
+        borderRadius="5px"
+        bg="reddit.400"
+        borderColor="gray.600"
+      >
+        <Flex align="stretch">
+          <Voting postId={id} initialVotes={votes} onVoteAttempt={onVoteAttempt} />
+          <VStack onClick={handleNavigation} align="stretch" flex="1">
+            <Box overflow="hidden">
+              <Box p={4}>
+                <Text fontSize="sm" color="gray.500">
+                  r/TestingSubreddit · Posted by u/{author} · <CalculateDate time={time} />
+                </Text>
+                <Heading color="gray.200" fontSize="xl" my={3}>
+                  {title}
+                </Heading>
+                <Text color="gray.300" mb={5} fontSize='md'>{content}</Text>
+
+                <Flex mt={2} align="flex-end">
+                  {iconButtons.map((item) => (
+                    <Flex key={item.id} align="center" mr={2}>
+                      <IconButton
+                        color="gray.300"
+                        _hover={{ bg: "reddit.200" }}
+                        aria-label={item.name}
+                        size="sm"
+                        variant="ghost"
+                        icon={item.icon}
+                      />
+                      <Text color="gray.400" fontSize="sm" ml={1}>
+                        {item.name}
+                      </Text>
+                    </Flex>
+                  ))}
+                </Flex>
+              </Box>
             </Box>
-          </Box>
-        </VStack>
-      </Flex>
-    </Box>
+          </VStack>
+        </Flex>
+      </Box>
+    </Flex>
   );
 };
 

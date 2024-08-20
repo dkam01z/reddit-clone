@@ -112,8 +112,8 @@ app.post('/postCommunity', (req, res) => {
     res.status(200).json({ message: "Success! Community created" });
   });
 });
-
-
+  
+ 
 app.get('/fetchComments', (req, res) => {
   const postId = req.query.postId;
 
@@ -145,6 +145,32 @@ app.get('/fetchComments', (req, res) => {
     }
   });
 });
+
+app.get('/fetchCommunities', (req, res) => {
+  const query = `
+      SELECT 
+          s.subreddit_id,
+          s.name AS subreddit_name,
+          s.created_at,
+          s.community_type,
+          s.population,
+          u.username AS creator_username
+      FROM 
+          subreddits s
+      JOIN 
+          users u ON s.user_id = u.user_id;
+  `;
+
+  db.query(query, (err, results) => {
+      if (err) {
+          console.error('Error fetching subreddits with usernames:', err);
+          return res.status(500).json({ message: 'Database error while fetching subreddits' });
+      }
+
+      res.json(results); 
+  });
+});
+
 
 
 

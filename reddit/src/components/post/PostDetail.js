@@ -16,9 +16,9 @@ const PostDetail = () => {
   const { selectedPost, loading, error } = useSelector((state) => state.post);
   const iconButtons = useMemo(() => [
     { id: 1, icon: <FaRegComment /> },
-    { id: 2, icon: <FaShare /> },
-    { id: 3, icon: <FaBookmark /> },
-    { id: 4, icon: <FaEllipsisH /> }
+    { id: 2, icon: <FaShare />, name: "Share"},
+    { id: 3, icon: <FaBookmark /> , name: "Save"},
+    { id: 4, icon: <FaEllipsisH />, name: "More" }
   ], []);
 
   const boxWidth = useBreakpointValue({
@@ -66,15 +66,14 @@ const PostDetail = () => {
       <Flex alignItems="start" justifyContent="flex-start">
         <Box
           width={boxWidth}
-          borderWidth="1px"
-          borderRadius="5px"
+          boxShadow={"lg"}
           bg="reddit.400"
           borderColor="gray.600"
           
         >
           <Flex align="stretch">
             <VStack>
-              <Box>
+              <Box >
                 <Box p={4}>
                   <Text fontSize="sm" color="gray.500">
                     r/TestingSubreddit · Posted by u/{author} · <CalculateDate time={time} />
@@ -87,8 +86,8 @@ const PostDetail = () => {
                   <Flex pr={5} mt={5}>
                     <PostVoting mx={1} p={5} postId={postId} initialVotes={votes} />
                     {iconButtons.map((item) => (
-                      <IconButton bg="#1f1f20" key={item.id} color="gray.300" _hover={{ bg: "reddit.200" }} aria-label="Comment" size="md" mx={1} variant="ghost" borderRadius={"15px"} icon={item.icon} />
-                    ))}
+                      <IconButton bg="#1f1f20" key={item.id} color="gray.300" _hover={{ bg: "reddit.200" }} aria-label="Comment" size="md" mx={1} variant="ghost" borderRadius={"15px"} icon={item.icon} /> 
+                                          ))}
                   </Flex>
 
                 </Box>

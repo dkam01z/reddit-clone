@@ -6,12 +6,19 @@ import { Link } from "react-router-dom";
 
 export const HomeCreate = () => {
     // Responsive width for the input box and the container
+    const boxWidth = useBreakpointValue({
+        base: '350px',
+        sm: '500px',
+        md: '600px',
+        xl: '700px',
+      });
     
     const containerWidth = useBreakpointValue({ base: "80%", sm: "100%", md: "100%" });
 
     return (
         <Flex paddingTop={5}  
-            w="100%"
+            maxW={boxWidth}
+            boxShadow="lg"
         >
             <Box
                 borderWidth="1px"
