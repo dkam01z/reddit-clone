@@ -23,11 +23,31 @@ export const fetchCommunities = createAsyncThunk('community/fetchCommunities', a
     }
 } )
 
-export const filterCommunityByName = createAction('posts/filterCommunityByName', (communityName) => {
-  return {
-    payload: communityName,
-  };
-});
+export const filterCommunityByName = createAsyncThunk(
+  'community/filterCommunity', 
+  async (communityName, { rejectWithValue }) => {
+      try {
+          const response = await fetch('http://localhost:5000/fetchCommunity', {
+              method: "GET",  
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ communityName }),
+              credentials: "include",
+          });
+
+          if (!response.ok) {
+              const error = await response.json();
+              throw new Error(error.message);
+          }
+
+          const data = await response.json();
+          return data;
+      } catch (error) {
+          return rejectWithValue(error.message);
+      }
+  }
+);
 
 
 
@@ -69,20 +89,23 @@ const CommunitySlice = createSlice({
         builder
             .addCase(fetchCommunities.fulfilled, (state,action) => {
                 state.loading = false
-                state.community = action.payload
+                state.communities = action.payload
                 
             })
             .addCase(fetchCommunities.pending, (state,action) => {
                 state.loading = true
-                state.community = action.payload
+                state.communities = action.payload
             })
             .addCase(fetchCommunities.rejected, (state,action) => {
-                state.loading = false
+              state.loading = false;
+              state.error = action.payload || 'Failed to fetch communities';
             })
-            .addCase(filterCommunityByName, (state, action) => {
-              const community = state.communities.find(community => community.name === action.payload);
-              state.selectedCommunity = community || null;
-            });
+            .addCase(filterCommunityByName.fulfilled, (state, action) => {
+              state.selectedCommunity = action.payload || null;
+          })
+          .addCase(filterCommunityByName.rejected, (state, action) => {
+              state.error = action.payload || 'Failed to filter community';
+          });
             
     }
 

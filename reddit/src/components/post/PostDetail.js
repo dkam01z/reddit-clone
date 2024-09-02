@@ -14,6 +14,8 @@ const PostDetail = () => {
   const { postId } = useParams();
   const dispatch = useDispatch();
   const { selectedPost, loading, error } = useSelector((state) => state.post);
+  const {isLoggedIn} = useSelector((state) => state.form)
+
   const iconButtons = useMemo(() => [
     { id: 1, icon: <FaRegComment /> },
     { id: 2, icon: <FaShare />, name: "Share"},

@@ -33,6 +33,7 @@ const PostVoting = ({ postId, initialVotes, onVoteAttempt }) => {
 
   const currentVote = userVotes[postId] || 0;
 
+   
 
   return (
     <HStack spacing={0} align="center" >

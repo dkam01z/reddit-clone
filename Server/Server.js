@@ -167,12 +167,32 @@ app.get('/fetchCommunities', (req, res) => {
           return res.status(500).json({ message: 'Database error while fetching subreddits' });
       }
 
+      console.log(results)
       res.json(results); 
   });
 });
 
 
+app.get('/filterCommunity' , (req,res) => {
+  
+  const {communityName } = req.body;
+  console.log(communityName)
+  const query = 'SELECT subreddit_id, name, created_at, user_id, community_type, population from subreddits where name = %s'
+  const params = [communityName]
 
+  db.query(query, params, (err, result) => {
+    if (err) {
+      const error = "Error in fetching subreddit";
+      return res.status(500).json({message: error})
+    }
+
+    console.log(res);
+
+    res.json(result);
+  })
+})
+
+ 
 
 app.post("/login", (req, res) => {
   const { Uname, password } = req.body;

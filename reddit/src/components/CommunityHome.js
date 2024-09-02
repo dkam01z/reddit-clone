@@ -11,7 +11,7 @@ const CommunityHome = () => {
     const {communityName} = useParams();
     const dispatch = useDispatch();
 
-    console.log(selectedCommunity)
+   
 
     useEffect(() => {
         try {

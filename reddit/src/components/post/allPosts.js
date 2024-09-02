@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchPost } from '../../slice/PostsSlice';
 import Posts from './posts'; // Adjust the path as necessary
-import { Box, VStack, Text, Spinner, Img, Flex, useBreakpointValue } from '@chakra-ui/react';
+import { Box, VStack, Text, Skeleton, SkeletonText, Img, Flex, useBreakpointValue } from '@chakra-ui/react';
 import Login from '../Login'; // Adjust the path as necessary
 import redditImage from "../logos/redditPersonalHome.png"; // Adjust the path as necessary
 import ErrorImg from '../logos/ErrorImg.png'; // Adjust the path as necessary
@@ -17,7 +17,6 @@ const PostList = () => {
     xl: false,
     "2xl": true // Show headlines only for xl and larger
   });
-
 
   useEffect(() => {
     dispatch(fetchPost());
@@ -35,60 +34,68 @@ const PostList = () => {
       mx="auto" // Center the container horizontally
     >
       <Box flex="1" mr={{ lg: 3 }}> {/* Reduced margin-right */}
-        {loading && <Spinner />}
-        {error && (
+        {loading ? (
+          // Display skeletons while loading
+          <>
+            {[...Array(5)].map((_, index) => (
+              <Box key={index} mb={6}>
+                <Skeleton height="20px" mb={4} />
+                <SkeletonText mt="4" noOfLines={4} spacing="4" />
+              </Box>
+            ))}
+          </>
+        ) : error ? (
           <VStack>
             <Img src={ErrorImg} alt="Error" />
             <Text color="red.500">Failed to load posts</Text>
           </VStack>
+        ) : (
+          posts && posts.map(post => (
+            <Posts 
+              key={post.id}
+              title={post.title}
+              time={post.time}
+              content={post.content}
+              author={post.author}
+              comments={post.comments}
+              votes={post.votes}
+              id={post.id}
+              onVoteAttempt={handleVoteAttempt}
+            />
+          ))
         )}
-        
-        {posts && posts.map(post => (
-          <Posts 
-            key={post.id}
-            title={post.title}
-            time={post.time}
-            content={post.content}
-            author={post.author}
-            comments={post.comments}
-            votes={post.votes}
-            id={post.id}
-            onVoteAttempt={handleVoteAttempt}
-          />
-        ))}
       </Box>
 
-        {showHeadlines && (
- <Box
- w={{ base: "100%", lg: "300px" }}
- my={{ base: 5, lg: 0 }}
- ml={{ lg: 3 }}
->
- <Flex
-   direction="column"
-   bg="white"
-   borderRadius={4}
-   borderColor="gray.300"
- >
-   <Flex
-     align="flex-end"
-     color="white"
-     p="6px 10px"
-     height="70px"
-     borderRadius="4px 4px 0px 0px"
-     fontWeight={600}
-     fontSize="lg"
-     bgImage={redditImage}
-     bgGradient={`linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)), url(${redditImage})`}
-     backgroundSize="cover"
-   >
-     Top communities
-   </Flex>
-   {/* Add any additional community content here */}
- </Flex>
-</Box>
-        )}
-     
+      {showHeadlines && (
+        <Box
+          w={{ base: "100%", lg: "300px" }}
+          my={{ base: 5, lg: 0 }}
+          ml={{ lg: 3 }}
+        >
+          <Flex
+            direction="column"
+            bg="white"
+            borderRadius={4}
+            borderColor="gray.300"
+          >
+            <Flex
+              align="flex-end"
+              color="white"
+              p="6px 10px"
+              height="70px"
+              borderRadius="4px 4px 0px 0px"
+              fontWeight={600}
+              fontSize="lg"
+              bgImage={redditImage}
+              bgGradient={`linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)), url(${redditImage})`}
+              backgroundSize="cover"
+            >
+              Top communities
+            </Flex>
+            {/* Add any additional community content here */}
+          </Flex>
+        </Box>
+      )}
 
       <Login isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
     </Flex>

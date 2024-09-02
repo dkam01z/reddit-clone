@@ -7,10 +7,10 @@ import { updateUserVote, fetchUserVotes } from '../slice/userVoteSlice';
 const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
   const dispatch = useDispatch();
   const userVotes = useSelector((state) => state.userVotes.userVotes);
-  const userId = useSelector((state) => state.form.id);
+  const userId = useSelector((state) => state.form.user.user_id);
   const loggedIn = useSelector((state) => state.form.isLoggedIn);
 
-  
+  console.log(userId)
 
   useEffect(() => {
     if (loggedIn) {
