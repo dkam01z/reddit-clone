@@ -2,6 +2,9 @@
   text-align: center;
 }
 
+
+
+
 .loading {
   font-size: 30px;
 }
@@ -28,8 +31,10 @@
   }
 }
 
+
+
 .App-header {
-  background-color: #282c34;
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -37,6 +42,7 @@
   justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   color: white;
+   font-family: 'IBM Plex Sans', sans-serif;
 }
 
 /* Add this CSS to your main CSS file or a styled component */

@@ -33,10 +33,10 @@ function NewBar() {
   };
 
   return (
-    <Box as="nav" bg="reddit.dark" py={{ base: 3, md: 2 }} px={2}>
+    <Box as="nav" bg="white" px={2}>
       <Flex
         alignItems="center"
-        borderBottom={{ base: '2px solid #202329', md: '1px solid #202329' }}
+    
         justifyContent="space-between"
         w="100%"
         pb={{ base: 2, md: 2 }}
@@ -44,11 +44,12 @@ function NewBar() {
         <Flex alignItems="center" justifyContent="flex-start" minWidth="10%">
           {isMobile && (
             <IconButton
+              
               aria-label="Open menu"
               icon={<HamburgerIcon />}
               onClick={onOpen}
               variant="ghost"
-              color="gray.200"
+              color="gray.400"
               fontSize="30px"
               background="none"
               _hover={{ background: "none" }}
@@ -56,6 +57,7 @@ function NewBar() {
             />
           )}
           <Image
+            ml={2}
             src={isMobile ? ResponsiveLogo : RedditLogo}
             alt="Reddit Logo"
             width={isMobile ? '60px' : '100px'}
@@ -107,7 +109,7 @@ function NewBar() {
               <Button
                 onClick={toggleLogin}
                 borderRadius="full"
-                bg="reddit.100"
+                bg="#3182ce"
                 color="white"
                 _hover={{ bg: 'reddit.100' }}
               >

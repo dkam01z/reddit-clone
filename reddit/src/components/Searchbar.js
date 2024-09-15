@@ -3,7 +3,7 @@ import { Stack, Input, InputGroup, InputLeftElement, Box, useBreakpointValue } f
 import { SearchIcon } from '@chakra-ui/icons';
 
 function SearchBar() {
-  const searchWidth = useBreakpointValue({ base: '100%', sm: '100%', md: '500px', xl: "750px" , "2xl": "100vh" });
+  const searchWidth = useBreakpointValue({ base: '100%', sm: '100%', md: '500px', xl: "700px"});
   const [term, setTerm] = useState(false);
   
 
@@ -11,7 +11,7 @@ function SearchBar() {
     <Stack spacing={4}>
       <InputGroup>
         <InputLeftElement pointerEvents="none">
-          <Box as={SearchIcon} color="gray.100" />
+          <Box as={SearchIcon} color="gray.400" />
         </InputLeftElement>
 
         <Input
@@ -19,12 +19,12 @@ function SearchBar() {
           size="lg"
           variant="filled"
           borderRadius="20px"
-          bg="#202329"
+          bg="gray.200"
           height="40px"
           width={searchWidth}
-          color="gray.300"
-          _hover={{ bg: "#202329" }} 
-          _focus={{ borderColor: "#202329", boxShadow: "none" }}
+          color="black"
+         
+          _focus={{ borderColor: "gray.400", boxShadow: "none" }}
 
         />
       </InputGroup>

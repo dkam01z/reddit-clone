@@ -11,12 +11,7 @@ const PostList = () => {
   const dispatch = useDispatch();
   const { posts, loading, error } = useSelector((state) => state.post || { posts: [], loading: false, error: null });
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const showHeadlines = useBreakpointValue({
-    base: false,
-    lg: false,
-    xl: false,
-    "2xl": true // Show headlines only for xl and larger
-  });
+
 
   useEffect(() => {
     dispatch(fetchPost());
@@ -65,37 +60,6 @@ const PostList = () => {
           ))
         )}
       </Box>
-
-      {showHeadlines && (
-        <Box
-          w={{ base: "100%", lg: "300px" }}
-          my={{ base: 5, lg: 0 }}
-          ml={{ lg: 3 }}
-        >
-          <Flex
-            direction="column"
-            bg="white"
-            borderRadius={4}
-            borderColor="gray.300"
-          >
-            <Flex
-              align="flex-end"
-              color="white"
-              p="6px 10px"
-              height="70px"
-              borderRadius="4px 4px 0px 0px"
-              fontWeight={600}
-              fontSize="lg"
-              bgImage={redditImage}
-              bgGradient={`linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75)), url(${redditImage})`}
-              backgroundSize="cover"
-            >
-              Top communities
-            </Flex>
-            {/* Add any additional community content here */}
-          </Flex>
-        </Box>
-      )}
 
       <Login isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)} />
     </Flex>

@@ -26,18 +26,18 @@ const Comment = ({ comment, level = 0 }) => {
       {level > 0 && (
         <Box
           position="absolute"
-          top="-1"
-          bottom="-8px"
+          top="-2"
+          bottom="-5px"
           left="-20px" // Adjust position to match the line correctly
           width="3px"
-          backgroundColor="gray.600"
+          backgroundColor="gray.400"
         />
       )}
       <Flex>
         <Box
-          backgroundColor="reddit.400"
+          backgroundColor="white"
           border="1px solid"
-          borderColor="reddit.400"
+          borderColor="gray.300"
           boxShadow="md"
           borderRadius="5px"
           p={5}
@@ -47,14 +47,14 @@ const Comment = ({ comment, level = 0 }) => {
             <VStack spacing={1} mr={2} alignItems="center" color="gray.400">
               <BiUpArrow />
               <Spacer/>
-              <Text fontSize={"md"}>0</Text>
+              <Text color={"gray.400"} fontWeight={600} fontSize={"md"}>0</Text>
               <BiDownArrow />
             </VStack>
             <Box>
-              <Text color="gray.500" my={1} fontSize="sm">
+              <Text color="black" my={1} fontSize="sm">
                 {comment.author} · <CalculateDate time={comment.time} />
               </Text>
-              <Text fontSize="md" color="gray.200" mt={2}>
+              <Text  fontSize='10pt' color="black" mt={2}>
                 {comment.content}
               </Text>
               <Text
@@ -149,7 +149,7 @@ const Comments = ({ postId }) => {
           <Box width="100%">
             <Text color={"gray.400"} mb={2} fontSize={"sm"}>
               Comment as{" "}
-              <Text as="span" color="gray.200">
+              <Text as="span" color="black">
                 {userName}
               </Text>
             </Text>
@@ -158,14 +158,14 @@ const Comments = ({ postId }) => {
               value={commentContent}
               onChange={(e) => setCommentContent(e.target.value)}
               placeholder="Add a Comment..."
-              _hover={{ bg: "#1f1f20" }}
+        
               _focus={{ borderColor: "gray.600", boxShadow: "none" }}
               size="md"
               height="120px"
-              bg="reddit.400"
+              bg="white"
               border="1px solid"
-              borderColor="reddit.400"
-              color="gray.200"
+              borderColor="gray.300"
+              color="black"
               borderRadius="10px"
               onKeyDown={submitCommentHandler}
               opacity={0.6}
@@ -174,9 +174,9 @@ const Comments = ({ postId }) => {
               size="sm"
               mt={2}
               onClick={submitCommentHandler}
-              colorScheme="reddit.200"
-              backgroundColor="reddit.400"
-              opacity={0.7}
+              colorScheme="blue"
+            
+              
             >
               Comment
             </Button>

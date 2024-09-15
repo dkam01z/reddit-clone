@@ -5,6 +5,7 @@ import { Box, Flex, useBreakpointValue } from "@chakra-ui/react";
 import { Category } from "./post/Category";
 import { useSelector } from "react-redux";
 import { Headlines } from "./Headlines";
+import CommunityPage from "./CommunityPage";
 
 export const Home = () => {
   const isDesktop = useBreakpointValue({ base: false, md: true, lg: true, xl: true });
@@ -13,6 +14,7 @@ export const Home = () => {
 
   return (
     <Flex my={3}>
+     
       <Flex direction="column">
         { (
           <Headlines />
@@ -26,6 +28,7 @@ export const Home = () => {
         )}
         <AllPosts />
       </Flex>
+      <CommunityPage />
     </Flex>
   );
 };

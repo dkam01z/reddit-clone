@@ -5,8 +5,9 @@ const ToggleButton = ({ isActive, onClick, icon, children, ...props }) => {
   return (
     <Button
       {...props}
-      bg={isActive ? 'gray.700' : "reddit.400"}
-      _hover={{ bg: 'gray.700' }}
+      
+      bg={isActive ? 'gray.100' : "white"}
+      color={isActive ? "#3182ce" : "gray.500"}
       onClick={onClick}
     >
       {icon} {children}

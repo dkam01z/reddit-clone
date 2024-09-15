@@ -36,8 +36,8 @@ export const Category = () => {
             boxShadow="lg"
             borderWidth="1px"
             borderRadius="5px"
-            bg="reddit.400"
-            borderColor="gray.600"
+            bg="white"
+            borderColor="gray.300"
             p={2}
             w={containerWidth}
             display="flex"
@@ -53,7 +53,7 @@ export const Category = () => {
             {buttons.map((items,key) => (
                 <Link to={items.to} key={key}>
                     <Flex>
-                        <Button fontSize={fontWidth} _hover={{background: "reddit.secondary"}} color="gray.300" background="none" leftIcon={items.icon}>
+                        <Button fontSize={fontWidth}  color="gray.400" background="none" leftIcon={items.icon}>
                             {items.title}
                         </Button>
                     </Flex>
@@ -61,7 +61,7 @@ export const Category = () => {
             ))}
 
         
-                <Button borderRadius="20px" rightIcon={<FaChevronDown/>} _hover={{background:"reddit.secondary"}} background="none" color="gray.300">
+                <Button borderRadius="20px" rightIcon={<FaChevronDown/>} background="none" color="gray.400">
                     Today
                 </Button>
                 

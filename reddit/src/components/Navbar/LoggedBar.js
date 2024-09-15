@@ -59,7 +59,7 @@ const LoggedBar = () => {
 
   const IconButtonComponent = ({ icon, label, to }) => (
     <Link to={to || '#'}>
-      <Button variant="unstyled">
+      <Button color={"black"} variant="unstyled">
         <Flex align="center">
           {icon}
         </Flex>
@@ -79,7 +79,7 @@ const LoggedBar = () => {
   const isMobile = useBreakpointValue({ base: true, lg: false });
 
   return (
-    <Flex bg="reddit.dark" borderBottom={{ base: '2px solid #202329', md: '1px solid #202329' }} color="white" align="center" justifyContent="space-between" px={2}>
+    <Flex bg={"white"}  color="white" align="center" justifyContent="space-between" px={2}>
       <Flex alignItems="center" justifyContent="flex-start" minWidth="10%">
         {isMobile && (
           <IconButton
@@ -95,6 +95,7 @@ const LoggedBar = () => {
           />
         )}
         <Image
+          ml={{md: 2}}
           src={isMobile ? ResponsiveLogo : RedditLogo}
           alt="Reddit Logo"
           width={isMobile ? '60px' : '100px'}
@@ -113,8 +114,8 @@ const LoggedBar = () => {
         </DrawerContent>
       </Drawer>
 
-      <Menu isLazy color="reddit.400">
-        <MenuButton p={2} borderRadius="5px" _hover={{ background: "#202329" }}>
+      <Menu isLazy color="black">
+        <MenuButton color="black" p={2} borderRadius="5px" >
           <Box _hover={{ background: "#202329" }}>
             <Flex align="center">
               <FaHome style={{ fontSize: "28px" }} />
@@ -124,8 +125,8 @@ const LoggedBar = () => {
             </Flex>
           </Box>
         </MenuButton>
-        <MenuList background="#202329" color="reddit.400">
-          <MenuItem onClick={toggleCommunityModal} background="#202329" color="gray.300"><Icon as={AddIcon} mr={2}/> Create a new Community</MenuItem>
+        <MenuList bg="white" color="black">
+          <MenuItem onClick={toggleCommunityModal}  color="black"><Icon as={AddIcon} mr={2}/> Create a new Community</MenuItem>
           
         </MenuList>
       </Menu>
@@ -144,20 +145,20 @@ const LoggedBar = () => {
         <IconButtonComponent key={index} icon={button.icon} label={!isSmallScreen && button.label} to={button.to} />
       ))}
 
-      <Menu isLazy background="#202329" color="reddit.400">
+      <Menu isLazy background="black" color="reddit.400">
         <MenuButton>
           <VStack>
             <Box fontWeight="bold" pr={2}>
-              <Text fontSize='xs'>{username}</Text>
+              <Text color="black" fontSize='xs'>{username}</Text>
             </Box>
-            <Box ml={1} pr={2} color="orange.400" fontSize="sm">
+            <Box ml={1} pr={2} color="#3182ce" fontSize="sm">
               <Flex> <IoMdSettings /> <Text fontSize='xs' ml={1}>1 Karma</Text></Flex>
             </Box>
           </VStack>
         </MenuButton>
         <IoIosArrowDown />
-        <MenuList background="#202329" color="gray.300">
-          <MenuItem background="#202329" color="gray.300" onClick={logoutHandler}>Logout</MenuItem>
+        <MenuList background="white" color="gray.300">
+          <MenuItem background="white" color="black" onClick={logoutHandler}>Logout</MenuItem>
         </MenuList>
       </Menu>
       {toggle && <Community isUse={toggle} onSwitch={toggleCommunityModal} />}

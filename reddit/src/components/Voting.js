@@ -10,7 +10,6 @@ const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
   const userId = useSelector((state) => state.form.user.user_id);
   const loggedIn = useSelector((state) => state.form.isLoggedIn);
 
-  console.log(userId)
 
   useEffect(() => {
     if (loggedIn) {
@@ -35,20 +34,20 @@ const Voting = ({ postId, initialVotes, onVoteAttempt }) => {
 
 
   return ( 
-    <VStack borderRight="1px solid" spacing={0} align="center" bg="reddit.500" borderColor="reddit.500">
+    <VStack borderRight="1px solid" spacing={0} align="center" bg="gray.100" borderColor="gray.100">
       <IconButton
-        _hover={{ bg: "reddit.200", color: "reddit.100" }}
-        color={loggedIn ? (currentVote === 1 ? "reddit.100" : "gray.300"): "gray.300" }
+        _hover={{ color: "reddit.100" }}
+        color={loggedIn ? (currentVote === 1 ? "reddit.100" : "gray.400"): "gray.400" }
         size="md"
         icon={<BiUpvote />}
         onClick={() => handleVote('upvote')}
         aria-label="Upvote"
         variant="ghost"
       />
-      <Text fontSize="lg" color={ loggedIn ? ( currentVote === -1 ? "blue.400" : currentVote === 1 ? "reddit.100": "gray.300"): "gray.300" } fontWeight={500}>{initialVotes}</Text>
+      <Text fontSize="lg" color={ loggedIn ? ( currentVote === -1 ? "blue.400" : currentVote === 1 ? "reddit.100": "gray.500"): "gray.500" } fontWeight={500}>{initialVotes}</Text>
       <IconButton
-        _hover={{ bg: "reddit.200", color: "blue.400" }}
-        color={loggedIn ? (currentVote === -1 ? "blue.400" : "gray.300"): "gray.300" }
+        _hover={{color: "blue.400" }}
+        color={loggedIn ? (currentVote === -1 ? "blue.400" : "gray.400"): "gray.400" }
         size="md"
         icon={<BiDownvote />}
         onClick={() => handleVote('downvote')}

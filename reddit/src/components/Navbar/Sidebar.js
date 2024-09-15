@@ -21,26 +21,26 @@ const Sidebar = ({sidebarWidth}) => {
   const drawerWidth = useBreakpointValue({ base: 'full', lg: '300px' });
 
   return (
-    <Box ml={2} width={drawerWidth}  background="reddit.dark" borderRight="1px solid #202329" color="white" overflowY="auto">
+    <Box  width={drawerWidth}  background="white" borderRight="1px solid white" color="white" overflowY="auto">
       <Accordion allowToggle>
         {SidebarData.map((item, index) => (
           <AccordionItem key={index} border="none">
             {({ isExpanded }) => (
               <>
                 <h2>
-                  <AccordionButton _hover={{ background: "#202329" }} p={3}>
+                  <AccordionButton _hover={{ background: "gray.100" }} p={3}>
                     <Flex flex={1} >
-                      <Icon as={item.icon} fontSize="24px" color="gray.300" mr={2} />
-                      <Text color="gray.200">{item.title}</Text>
+                      <Icon  as={item.icon} fontSize="24px" color="gray.400" mr={2} />
+                      <Text fontWeight={500} color="black">{item.title}</Text>
                     </Flex>
-                    {item.subNav && <AccordionIcon />}
+                    {item.subNav && <AccordionIcon color={"gray.400"} />}
                   </AccordionButton>
                 </h2>
                 {item.subNav && (
                   <AccordionPanel pl={8} pb={4}>
                     <VStack align="start">
                       {item.subNav.map((subItem, subIndex) => (
-                        <Link key={subIndex} href={subItem.link} _hover={{ textDecoration: 'none', bg: '#202329', w: "100%", borderRadius: "10px" }}>
+                        <Link key={subIndex} href={subItem.link} _hover={{ textDecoration: 'none', w: "100%", borderRadius: "10px" }}>
                           <Flex align="center" gap={2}>
                             <Icon as={subItem.icon} mr={2} />
                             <Text>{subItem.title}</Text>
@@ -50,7 +50,7 @@ const Sidebar = ({sidebarWidth}) => {
                     </VStack>
                   </AccordionPanel>
                 )}
-                {item.subNav ? <Divider borderColor="#202329" /> : null}
+                {item.subNav ? <Divider  /> : null}
               </>
             )}
           </AccordionItem>

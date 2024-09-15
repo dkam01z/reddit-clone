@@ -165,13 +165,42 @@ app.get('/fetchCommunities', (req, res) => {
       if (err) {
           console.error('Error fetching subreddits with usernames:', err);
           return res.status(500).json({ message: 'Database error while fetching subreddits' });
-      }
+      } 
 
-      console.log(results)
+      console.log(results) 
       res.json(results); 
   });
 });
 
+app.get('/fetchTopCommunities', (req, res) => {
+  const query = `
+  SELECT 
+  s.subreddit_id,
+  s.name AS subreddit_name,
+  s.created_at,
+  s.community_type,
+  s.population,
+  u.username AS creator_username
+FROM 
+  subreddits s
+JOIN 
+  users u ON s.user_id = u.user_id
+ORDER BY 
+  s.population DESC
+LIMIT 5;
+
+  `;
+
+  db.query(query, (err, results) => {
+      if (err) {
+          console.error('Error fetching Top subreddits with usernames:', err);
+          return res.status(500).json({ message: 'Database error while fetching subreddits' });
+      } 
+
+      console.log(results) 
+      res.json(results); 
+  });
+});
 
 app.get('/filterCommunity' , (req,res) => {
   

@@ -34,32 +34,32 @@ const Posts = ({ author, title, content, comments, votes, time, id, onVoteAttemp
     <Flex  my={1}>
       <Box
         boxShadow="lg"
-        _hover={{ bg: "#1f1f20" }}
+        _hover={{ bg: "gray.100" }}
         cursor="pointer"
         width={boxWidth}
         borderWidth="1px"
         borderRadius="5px"
-        bg="reddit.400"
-        borderColor="gray.600"
+        bg="white"
+        borderColor="gray.300"
       >
         <Flex align="stretch">
           <Voting postId={id} initialVotes={votes} onVoteAttempt={onVoteAttempt} />
           <VStack onClick={handleNavigation} align="stretch" flex="1">
             <Box overflow="hidden">
               <Box p={4}>
-                <Text fontSize="sm" color="gray.500">
+                <Text fontSize="sm" color="black">
                   r/TestingSubreddit · Posted by u/{author} · <CalculateDate time={time} />
                 </Text>
-                <Heading color="gray.200" fontSize="xl" my={3}>
+                <Text  fontWeight={600} fontSize={"12pt"} color="black" my={3}>
                   {title}
-                </Heading>
-                <Text color="gray.300" mb={5} fontSize='md'>{content}</Text>
+                </Text>
+                <Text color="black" mb={5} fontSize='10pt'>{content}</Text>
 
                 <Flex mt={2} align="flex-end">
                   {iconButtons.map((item) => (
                     <Flex key={item.id} align="center" mr={2}>
                       <IconButton
-                        color="gray.300"
+                        color="gray.400"
                         _hover={{ bg: "reddit.200" }}
                         aria-label={item.name}
                         size="sm"

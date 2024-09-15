@@ -13,6 +13,8 @@ import { Home } from './components/Home';
 import ProgressBar from './components/ProgressBar'; 
 import PostDetail from './components/post/PostDetail';
 import CommunityHome from './components/CommunityHome';
+import CommunityPage from './components/CommunityPage';
+
 
 function App() {
   const loggedIn = useSelector((state) => state.form.isLoggedIn);
@@ -21,11 +23,14 @@ function App() {
   return (
     <Router>
       <ProgressBar /> 
+    
+     
+      
       <Flex background="reddit.dark" direction="column">
         {loggedIn ? <LoggedBar /> : <NewBar />}
         <Flex>
           {!isMobile ? <Sidebar /> : null}
-          <Flex direction="column" flexGrow={1}>
+          <Flex bg={"gray.200"} direction="column" flexGrow={1}>
             <div className="App-header">
            
               <Box>
@@ -42,6 +47,7 @@ function App() {
           </Flex>
         </Flex>
       </Flex>
+   
     </Router>
   );
 }

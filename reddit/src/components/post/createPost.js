@@ -24,17 +24,17 @@ import Swal from "sweetalert2";
 
 const CreatePost = () => {
   const buttonStyles = {
-    bg: "reddit.400",
-    color: "white",
+    bg: "white",
+    color: "gray.500",
     rounded: 0,
     border: "1px",
-    borderColor: "gray.500",
+    borderColor: "gray.300",
     height: "50",
   };
   const categoriesStyles = {
     mt: "40px",
-    bg: "reddit.400",
-    color: "white",
+    bg: "gray.100",
+    color: "black",
     rounded: "40px",
     border: "1px",
     borderColor: "gray.100",
@@ -137,7 +137,7 @@ const CreatePost = () => {
     <Flex p={5} justifyContent="flex-start" alignItems="flex-start" >
       <Box p={4} width={boxWidth}>
         <Flex borderBottom="2px" width="100%">
-          <Heading mb={4} size="md">
+          <Heading color="black" mb={4} size="md">
             Create a New Post
           </Heading>
           <Spacer />
@@ -147,9 +147,9 @@ const CreatePost = () => {
         </Flex>
 
         <Select
-          color="gray.300"
-          backgroundColor="reddit.400"
-          borderColor="gray.400"
+          color="black"
+          backgroundColor="white"
+          borderColor="gray.300"
           _focus={{ borderColor: "gray.400", boxShadow: "none" }}
           m={5}
           isSearchable
@@ -157,13 +157,14 @@ const CreatePost = () => {
           width={searchBoxWidth}
         />
 
-        <Box borderRadius="10px" bg="reddit.400">
-          <Flex alignItems="center" justifyContent="space-between">
+        <Box borderRadius="10px" bg="white">
+          <Flex >
             {buttons.map((button) => (
               <ToggleButton
                 key={button.name}
                 {...buttonStyles}
                 flex={1}
+                
                 isActive={activeButton === button.name}
                 onClick={() => handleButtonClick(button.name)}
                 icon={button.icon}
@@ -187,7 +188,7 @@ const CreatePost = () => {
                 ml="1"
                 {...categoriesStyles}
                 onClick={() => handleIcon(category)}
-                _hover={{ bg: "gray.700" }}
+              
                 key={category}
               >
                 {selectedCategories[category] ? <FaCheck /> : <IoMdAdd />}{" "}
@@ -198,21 +199,22 @@ const CreatePost = () => {
 
           <Box mt={3} borderTop="1px">
             <Flex p="2" justifyContent="flex-end" mr={2} alignItems="center">
-              <Button ml="1" {...categoriesStyles} _hover={{ bg: "gray.700" }}>
+              <Button ml="1" {...categoriesStyles}>
                 Save Draft
               </Button>
               <Button
                 onClick={() => submitForm()}
                 ml="1"
                 {...categoriesStyles}
-                _hover={{ bg: "gray.700" }}
+                color={"gray.050"}
+                bg="#3182ce"
               >
                 Submit
               </Button>
             </Flex>
 
             <Box ml={10} p="2">
-              <Checkbox defaultChecked>
+              <Checkbox color={"black"} defaultChecked>
                 Send me post reply notifications
               </Checkbox>
             </Box>

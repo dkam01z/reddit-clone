@@ -41,6 +41,18 @@ function Community({ isUse, onSwitch }) {
   };
 
   const submitCommunity = () => {
+
+    if (!communityName  || !communityType || !user_id ) {
+      toast({
+        title: 'Missing Parameters, please check your details.',
+        status: 'error',
+        duration: 9000,
+        isClosable: true, 
+      });
+
+      return;
+    }
+
     dispatch(postCommunity({ communityName, communityType, user_id }))
       .unwrap()
       .then(() => {
@@ -64,54 +76,54 @@ function Community({ isUse, onSwitch }) {
 
   return (
     <>
-      <Modal bg="reddit.200" isOpen={isUse} onClose={onSwitch} isCentered>
+      <Modal bg="white" isOpen={isUse} onClose={onSwitch} isCentered>
         <ModalOverlay className="overlay" />
-        <ModalContent className="modal-content" bg="#282c34">
-          <ModalHeader color="gray.100">Create a New Community</ModalHeader>
+        <ModalContent className="modal-content" bg="white">
+          <ModalHeader color="black">Create a New Community</ModalHeader>
           <ModalCloseButton className="close-modal" />
           <ModalBody>
             <FormControl>
-              <FormLabel color="gray.300" fontSize={"20px"}>Name</FormLabel>
+              <FormLabel color="black" fontSize={"20px"}>Name</FormLabel>
               <FormHelperText color="gray.500">
                 Community names including capitalization cannot be changed.
               </FormHelperText>
 
               <Input
                 border="none"
-                bg="#393c47"
+                bg="gray.100"
                 onInput={maxHandler}
                 focusBorderColor="transparent"
                 borderRadius="10"
                 mt={5}
                 height="40px"
                 placeholder="r/"
-                color="gray.200"
+                color="black"
                 type="text"
                 onChange={(e) => setName(e.target.value)}
               />
-              <FormHelperText color="gray.500">
+              <FormHelperText color="black">
                 {number} Characters left.
               </FormHelperText>
 
               <Box>
-                <FormLabel my={5} color="gray.300" fontSize={"20px"}>Community type</FormLabel>
+                <FormLabel my={5} color="black" fontSize={"20px"}>Community type</FormLabel>
                 <RadioGroup onChange={setCommunityType} value={communityType}>
                   <Flex direction="column" my={2}>
                     <Flex color={"gray.200"}  my={1}>
-                      <Radio value="public" colorScheme='orange' mr={2}>
-                        <Icon  as={GoPeople} mr={1}/>Public
+                      <Radio value="public" colorScheme='blue' mr={2}>
+                        <Icon  color={"#3182ce"} as={GoPeople} mr={1}/>Public
                       </Radio>
-                      <Text textColor="gray.400">Anyone can view, post and comment.</Text>
+                      <Text  textColor="gray.400">Anyone can view, post and comment.</Text>
                     </Flex>
                     <Flex color={"gray.200"} my={1}>
                       <Radio value="restricted" colorScheme='orange' mr={2}>
-                        <Icon mr={1}   as={FaEyeSlash}/>Restricted
+                        <Icon mr={1} color={"#3182ce"}  as={FaEyeSlash}/>Restricted
                       </Radio>
                       <Text whiteSpace={"nowrap"} textColor="gray.400">Only approved users can comment.</Text>
                     </Flex>
                     <Flex  color={"gray.200"} my={1}>
                       <Radio value="private" colorScheme='orange' mr={2}>
-                        <Icon mr={1} as={FaLock}/>Private
+                        <Icon mr={1}color={"#3182ce"}  as={FaLock}/>Private
                       </Radio>
                       <Text textColor="gray.400">Only private viewers can post content.</Text>
                     </Flex>
@@ -123,9 +135,9 @@ function Community({ isUse, onSwitch }) {
           <Center>
             <ModalFooter>
               <Button
-                bg="reddit.100"
-                color="gray.200"
-                _hover={{ bg: 'reddit.100' }}
+                bg="#3182ce"
+                color="gray.100"
+                _hover={{bg: "#3182ce"}}
                 borderRadius="50"
                 width={40}
                 onClick={submitCommunity}

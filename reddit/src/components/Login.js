@@ -124,41 +124,41 @@ function Login({ isOpen, onClose }) {
 
 
   return (
-    <Modal bg="reddit.200" isOpen={isOpen} onClose={onClose} isCentered >
+    <Modal bg="gray.100" isOpen={isOpen} onClose={onClose} isCentered >
       <ModalOverlay className="overlay" />
-      <ModalContent className="modal-content" bg="#282c34">
-        <ModalHeader color="gray.100">{isSignUp ? "Sign Up" : "Log In"}</ModalHeader>
+      <ModalContent className="modal-content" bg="white">
+        <ModalHeader color="black">{isSignUp ? "Sign Up" : "Log In"}</ModalHeader>
 
         <ModalCloseButton className="close-modal" />
         <ModalBody>
           <FormControl>
-            <FormHelperText color="gray.200" py={3}>
+            <FormHelperText color="gray.400" py={3}>
               By continuing, you agree to our User Agreement and acknowledge
               that you understand the Privacy Policy.
             </FormHelperText>
             {isSignUp ? (
                 <>
                         
-                        <Input border="none" bg="#393c47" focusBorderColor="transparent" borderRadius="15" p={2} my={2} height="50px"   placeholder="Email"  color="gray.200" type="text" onChange={(e) =>setEmail(e.target.value)} />
+                        <Input border="none" bg="gray.200" focusBorderColor="transparent" borderRadius="15" p={2} my={2} height="50px"   placeholder="Email"  color="black" type="text" onChange={(e) =>setEmail(e.target.value)} />
                        
-                        <Input border="none" bg="#393c47" focusBorderColor="transparent" borderRadius="15"  p={2} my={2} height="50px"   color="gray.200"  placeholder="Username" onChange={(e) =>setUname(e.target.value)} type="Username" />
+                        <Input border="none" bg="gray.200" focusBorderColor="transparent" borderRadius="15"  p={2} my={2} height="50px"   color="black" placeholder="Username" onChange={(e) =>setUname(e.target.value)} type="Username" />
                        
-                        <Input  border="none" bg="#393c47" focusBorderColor="transparent" borderRadius="15"  p={2} my={2} height="50px" color="gray.200"  placeholder="Password" onChange={(e) =>setPassword(e.target.value)}  type="password" />
+                        <Input  border="none"bg="gray.200"focusBorderColor="transparent" borderRadius="15"  p={2} my={2} height="50px" color="black"  placeholder="Password" onChange={(e) =>setPassword(e.target.value)}  type="password" />
 
 
                 </>
             ) : (
                 <>
                       
-                        <Input border="none" bg="#393c47" focusBorderColor="transparent" borderRadius="15" placeholder="Username" p={2} my={2} height="50px" onChange={(e) =>setUname(e.target.value)} color="gray.200"  type="text" />
+                        <Input border="none"bg="gray.200" focusBorderColor="transparent" borderRadius="15" placeholder="Username" p={2} my={2} height="50px" onChange={(e) =>setUname(e.target.value)} color="black" type="text" />
                       
-                        <Input border="none"  bg="#393c47" focusBorderColor="transparent" borderRadius="15" py={3} color="gray.200" p={2}  my={5} height="50px"  onChange={(e) =>setPassword(e.target.value)} placeholder="Password * " type="password" />
+                        <Input border="none"  bg="gray.200" focusBorderColor="transparent" borderRadius="15" py={3} color="black"p={2}  my={5} height="50px"  onChange={(e) =>setPassword(e.target.value)} placeholder="Password * " type="password" />
                 </>
                 
             )}
 
 
-            <FormHelperText color="gray.200">
+            <FormHelperText color="black">
               {isSignUp ? (
                 <>
                   Already have an account?{" "}
@@ -175,12 +175,12 @@ function Login({ isOpen, onClose }) {
                 </>
               )}
             </FormHelperText>
-            <FormHelperText color="gray.200">
+            <FormHelperText color="black">
               Forgot your <a>Username</a> and{" "}
               <a>Password</a>?
             </FormHelperText>
             <Center py={3}  >
-              <Button bg="reddit.100" color="gray.200"  _hover={{ bg: 'reddit.100' }} borderRadius="50" width={40} onClick={() => {
+              <Button bg="#3182ce" color="gray.200"  _hover={{ bg: 'reddit.100' }} borderRadius="50" width={40} onClick={() => {
                isSignUp ? registerHandle() : loginHandle()
               }} alignItems="center">
                 {isSignUp ? "Sign Up" : "Log In"}

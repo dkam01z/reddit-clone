@@ -23,8 +23,8 @@ export const HomeCreate = () => {
             <Box
                 borderWidth="1px"
                 borderRadius="5px"
-                bg="reddit.400"
-                borderColor="gray.600"
+                bg="white"
+                borderColor="gray.300"
                 p={2}
                 w={containerWidth} 
                 display="flex"
@@ -35,17 +35,17 @@ export const HomeCreate = () => {
                     <Input
                         placeholder="What's on your mind?"
                         border="none"
-                        bg="reddit.secondary"
+                        bg="gray.100"
                         _placeholder={{ color: "gray.500" }}
-                        _hover={{ bg: "reddit.secondary" }}
+                       
                         _focus={{ outline: "none" }}
                         mr={2} 
                     />
                 </Link>
-                <Button  _hover={{ bg: "reddit.secondary" }} variant="ghost" color="gray.200" mr={2}>
+                <Button  _hover={{ bg: "gray.400" }} variant="ghost" color="gray.300" mr={2}>
                     <FaImage />
                 </Button>
-                <Button   _hover={{ bg: "reddit.secondary" }} variant="ghost" color="gray.200">
+                <Button   _hover={{ bg: "gray.400" }} variant="ghost" color="gray.300">
                     <FaLink />
                 </Button>
             </Box>

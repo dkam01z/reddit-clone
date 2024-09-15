@@ -64,13 +64,14 @@ const PostDetail = () => {
 
 
   return (
-    <Box>
+    <Box py={5} >
       <Flex alignItems="start" justifyContent="flex-start">
         <Box
           width={boxWidth}
           boxShadow={"lg"}
-          bg="reddit.400"
-          borderColor="gray.600"
+         borderRadius="5px"
+          bg="white"
+          borderColor="gray.300"
           
         >
           <Flex align="stretch">
@@ -80,15 +81,15 @@ const PostDetail = () => {
                   <Text fontSize="sm" color="gray.500">
                     r/TestingSubreddit · Posted by u/{author} · <CalculateDate time={time} />
                   </Text>
-                  <Heading color="gray.200" fontSize="xxl" my={2}>
+                  <Heading color={"black"} fontWeight={600} fontSize={"12pt"} my={2}>
                     {title}
                   </Heading>
-                  <Text color="gray.300" mt={5} fontSize='md'>{content}</Text>
+                  <Text color="black" mt={5} fontSize='md'>{content}</Text>
 
                   <Flex pr={5} mt={5}>
                     <PostVoting mx={1} p={5} postId={postId} initialVotes={votes} />
                     {iconButtons.map((item) => (
-                      <IconButton bg="#1f1f20" key={item.id} color="gray.300" _hover={{ bg: "reddit.200" }} aria-label="Comment" size="md" mx={1} variant="ghost" borderRadius={"15px"} icon={item.icon} /> 
+                      <IconButton  key={item.id} color="gray.400" _hover={{ bg: "reddit.200" }} aria-label="Comment" size="md" mx={1} variant="ghost" borderRadius={"15px"} icon={item.icon} /> 
                                           ))}
                   </Flex>
 
