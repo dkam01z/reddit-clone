@@ -9,7 +9,7 @@ export const useSwalSuccess = (onClose) => {
       icon: "success",
       customClass: {
         container: 'swal-overlay',
-        popup: 'dark-theme',
+       
       },
     });
     if (onClose) {

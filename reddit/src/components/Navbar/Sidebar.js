@@ -21,7 +21,7 @@ const Sidebar = ({sidebarWidth}) => {
   const drawerWidth = useBreakpointValue({ base: 'full', lg: '300px' });
 
   return (
-    <Box  width={drawerWidth}  background="white" borderRight="1px solid white" color="white" overflowY="auto">
+    <Box  width={drawerWidth}  background="white"  borderRight="1px solid #E2E8F0" color="white" overflowY="auto">
       <Accordion allowToggle>
         {SidebarData.map((item, index) => (
           <AccordionItem key={index} border="none">
@@ -42,8 +42,8 @@ const Sidebar = ({sidebarWidth}) => {
                       {item.subNav.map((subItem, subIndex) => (
                         <Link key={subIndex} href={subItem.link} _hover={{ textDecoration: 'none', w: "100%", borderRadius: "10px" }}>
                           <Flex align="center" gap={2}>
-                            <Icon as={subItem.icon} mr={2} />
-                            <Text>{subItem.title}</Text>
+                            <Icon color={"gray.400"} as={subItem.icon} mr={2} />
+                            <Text fontWeight={400} color="black">{subItem.title}</Text>
                           </Flex>
                         </Link>
                       ))}

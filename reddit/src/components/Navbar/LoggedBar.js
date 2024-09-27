@@ -79,7 +79,7 @@ const LoggedBar = () => {
   const isMobile = useBreakpointValue({ base: true, lg: false });
 
   return (
-    <Flex bg={"white"}  color="white" align="center" justifyContent="space-between" px={2}>
+    <Flex bg={"white"}  color="white" align="center"  borderBottom="1px solid #E2E8F0" justifyContent="space-between" px={2}>
       <Flex alignItems="center" justifyContent="flex-start" minWidth="10%">
         {isMobile && (
           <IconButton

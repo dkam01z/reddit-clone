@@ -20,6 +20,7 @@ import '../App.css';
 import {useDispatch} from 'react-redux';
 import { signUpUser, loginUser } from "../slice/FormSlice";
 import { useSwalSuccess } from "./Swal/useSwalSuccess";
+import { LockIcon } from "@chakra-ui/icons";
 
 
 
@@ -127,12 +128,12 @@ function Login({ isOpen, onClose }) {
     <Modal bg="gray.100" isOpen={isOpen} onClose={onClose} isCentered >
       <ModalOverlay className="overlay" />
       <ModalContent className="modal-content" bg="white">
-        <ModalHeader color="black">{isSignUp ? "Sign Up" : "Log In"}</ModalHeader>
+        <ModalHeader fontWeight={650}  color="#3182ce">{isSignUp ? "Sign Up" : "Log In"}</ModalHeader>
 
         <ModalCloseButton className="close-modal" />
         <ModalBody>
           <FormControl>
-            <FormHelperText color="gray.400" py={3}>
+            <FormHelperText color="gray.500" py={3}>
               By continuing, you agree to our User Agreement and acknowledge
               that you understand the Privacy Policy.
             </FormHelperText>

@@ -36,7 +36,7 @@ function NewBar() {
     <Box as="nav" bg="white" px={2}>
       <Flex
         alignItems="center"
-    
+        borderBottom="1px solid #E2E8F0"
         justifyContent="space-between"
         w="100%"
         pb={{ base: 2, md: 2 }}

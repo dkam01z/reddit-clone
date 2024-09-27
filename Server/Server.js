@@ -201,7 +201,7 @@ LIMIT 5;
       res.json(results); 
   });
 });
-
+ 
 app.get('/filterCommunity' , (req,res) => {
   
   const {communityName } = req.body;
